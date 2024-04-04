@@ -16,6 +16,8 @@ public class Category {
     @Column(name = "Category_name")
     private String categoryName;
 
-    @Column(name = "Category_color")
-    private String categoryColor;
+    @Enumerated(EnumType.STRING)
+    @Column(name ="Color")
+    private Color color;
+
 }
