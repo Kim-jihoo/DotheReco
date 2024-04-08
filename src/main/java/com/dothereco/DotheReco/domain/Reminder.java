@@ -1,10 +1,12 @@
 package com.dothereco.DotheReco.domain;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 
 @Entity
 @Setter
@@ -27,11 +29,11 @@ public class Reminder {
     private Boolean reminderCheck;
 
     @Column(name = "Reminder_date")
-    private Date reminderDate;
+    private LocalDate reminderDate;
 
     @Column(name = "Reminder_week")
     private String reminderWeek;
 
     @Column(name = "Reminder_time")
-    private Time reminderTime;
+    private LocalTime reminderTime;
 }

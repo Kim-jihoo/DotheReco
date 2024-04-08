@@ -23,12 +23,20 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1' //일단 이거 추가했는데 버전 확인 필요
+	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security',version: '6.1.2.' //이건 중복임.
+	implementation 'org.springframework.boot:spring-boot-starter-validation' //이거 @valid때문에 추가했음.
+	//implementation 'jakarta.validation:jakarta.validation-api:2.0.2'
+	//이거까지 추가하면 충돌남;;;;
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

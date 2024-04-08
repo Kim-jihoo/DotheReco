@@ -1,0 +1,52 @@
+img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    margin-top: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0; /* body의 기본 마진을 제거하여 화면을 꽉 채우도록 설정 */
+}
+
+form {
+    width: 440px;
+    text-align: center; /* 폼 내부 요소를 가운데 정렬 */
+}
+
+h1 {
+    font-size: 50px;
+    color: #303030;
+    line-height: 20px;
+    text-align: center;
+    font-style:normal;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: 500;
+}
+
+button {
+    border-radius: 20px;
+    padding: 5px 40px; /* 버튼 내부 여백을 조절 */
+    font-size: 20px;
+    background-color: #acada9;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: 20px;
+    width: 140px;
+    font-family: "Monomaniac One", sans-serif;
+}
+
+button:last-child {
+    margin-right: 0;
+}
+
+button:hover {
+    background-color: #787977;
+}
