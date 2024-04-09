@@ -24,7 +24,7 @@ public class UserController {
     //회원가입 페이지 띄워줌.
     @GetMapping("/signup/json")
     public String signup(MemberFormDto memberFormDto) {
-        return "signup_form";
+        return "signup";
     }
 
     //회원가입 처리 해주는 메서드

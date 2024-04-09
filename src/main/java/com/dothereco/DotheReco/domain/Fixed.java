@@ -2,52 +2,53 @@ package com.dothereco.DotheReco.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Setter
 @Getter
-@Table(name = "Fixed")
+@Table(name = "fixed")
 public class Fixed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Fixed_code")
+    @Column(name = "fixed_code")
     private Long fixedCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "User_code")
+    @JoinColumn(name = "user_code")
     private User user;
 
     @Column(name = "Fixed_title")
     private String fixedTitle;
 
     @Column(name = "Fixed_startDay")
-    private Date fixedStartDay;
+    private LocalDate fixedStartDay;
 
-    @Column(name = "Fixed_endDay")
-    private Date fixedEndDay;
+    @Column(name = "fixed_endDay")
+    private LocalDate fixedEndDay;
 
-    @Column(name = "Fixed_startTime")
-    private Time fixedStartTime;
+    @Column(name = "fixed_startTime")
+    private LocalTime fixedStartTime;
 
-    @Column(name = "Fixed_endTime")
-    private Time fixedEndTime;
+    @Column(name = "fixed_endTime")
+    private LocalTime fixedEndTime;
 
     @Lob
-    @Column(name = "Fixed_memo", columnDefinition = "text")
+    @Column(name = "fixed_memo", columnDefinition = "text")
     private String fixedMemo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Category_Code")
-    private Category category;
+    private Category category;*/ //카테고리 데이터가 없어서 우선 주석처리함.
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Place_Code")
-    private Place place;
+    private Place place;*/
 
     @OneToMany (mappedBy = "fixedList2")
     private List<Connection2> connections2 = new ArrayList<>();

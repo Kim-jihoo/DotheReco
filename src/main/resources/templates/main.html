@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/frontend/src/css/main.css"
+          href="https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css" />
+    <style>
+        @import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+        @import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+    </style>
+    <title>Main Calendar</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="top_right_images">
+        <img id="search" src="/frontend/src/images/search.png" />
+        <img id="popup_addSchedule" src="/frontend/src/images/addSchedule.png" />
+        <div class="popup_wrap">
+            <div class="button_container">
+                <button>일반 스케줄 추가</button>
+                <button>유동 스케줄 추가</button>
+                <button>리마인더 추가</button>
+            </div>
+        </div>
+    </div>
+    <div class="back_bg"></div>
+    <div class="calendar">
+        <div class="header">
+            <div class="nav prev">
+                <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
+            </div>
+            <div class="year-month"></div>
+            <div class="nav next">
+                <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+            </div>
+        </div>
+        <div class="main">
+            <div class="days">
+                <div class="day">SUN</div>
+                <div class="day">MON</div>
+                <div class="day">TUE</div>
+                <div class="day">WED</div>
+                <div class="day">THU</div>
+                <div class="day">FRI</div>
+                <div class="day">SAT</div>
+            </div>
+            <div class="dates"></div>
+        </div>
+    </div>
+    <div class="bottom_menu">
+        <div>
+            <img src="/frontend/src/images/Time table.png" />
+            <p>Time table</p>
+        </div>
+        <div>
+            <img src="/frontend/src/images/Calendar.png" />
+            <p>Calendar</p>
+        </div>
+        <div>
+            <img src="/frontend/src/images/할 일 list.png" />
+            <p>To Do list</p>
+        </div>
+        <div>
+            <img src="/frontend/src/images/Setting.png" />
+            <p>Setting</p>
+        </div>
+    </div>
+    <script src="/frontend/src/js/main.js"></script>
+</div>
+</body>
+
+</html>

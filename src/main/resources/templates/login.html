@@ -1,10 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta charset="utf-8" />
+  <title>Login</title>
+  <meta name="keyword" content="login, html" />
+  <link rel="stylesheet" type="text/css" href="/frontend/src/css/login.css" />
+  <link rel="stylesheet"
+        integrity="sha512-DmrIuI+3t3Bv20S5SPCEJmgxhLUb/8WCsBp2LBk9w8k+/Nv8uDC5XqJ2bb/5d+taMHfiNmS1CSrUDIAnBwFJzA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+    @import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+  </style>
 </head>
+
 <body>
-$END$
+<div class="container">
+  <button onclick="window.history.back()" class="back-button" id="back-button">
+    &lt;
+  </button>
+  <h1>Login</h1>
+  <hr />
+  <form action="login.html" methods="POST">
+    <div class="input-container">
+      <label for="id-account"></label>
+      <input type="text" name="account" id="id-account" placeholder="이메일" required="required" />
+    </div>
+    <div class="input-container">
+      <label for="password-account"></label>
+      <input type="password" name="password" id="password-account" placeholder="비밀번호" required="required" />
+    </div>
+    <button type="submit">확인</button>
+  </form>
+  <script src="/frontend/src/js/login.js"></script>
+</div>
 </body>
+
 </html>

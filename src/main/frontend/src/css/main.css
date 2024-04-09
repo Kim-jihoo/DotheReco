@@ -1,0 +1,210 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    justify-content: center;
+    align-items: center;
+    max-width: 500px; /* 최대 너비를 600px로 제한 */
+    margin: auto; /* 가운데 정렬 */
+}
+
+.top_right_images {
+    position: relative;
+    margin-top: 25px;
+    z-index: 100;
+    left: 350px;
+}
+
+.top_right_images img {
+    margin-left: 20px; /* 이미지 사이의 간격 조정 */
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.popup_wrap {
+    display: none;
+    width: 150px; /* 팝업창 너비 자동 조정 */
+    height: auto; /* 팝업창 높이 자동 조정 */
+    position: fixed;
+    top: 9%;
+    left: 50%;
+    transform: translateX(60px);
+    background: #FFFFFF;
+    z-index: 1000; /* 다른 요소들보다 위에 표시되도록 높은 값 설정 */
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 10px; /* 팝업 내부 여백 */
+}
+
+
+.button_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button_container button {
+    font-family: 'NanumSquareRound';
+    width: 100%; /* 버튼이 컨테이너의 너비를 채우도록 조정 */
+    padding: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border: none;
+    cursor: pointer;
+    background-color: #FFFFFF;
+}
+
+.back_bg{
+    display: none;
+    position: fixed;
+    content:"";
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.calendar {
+    font-family: "Monomaniac One", sans-serif;
+    font-size: 20px;
+    width: 90%;
+    max-width: 600px;
+    margin: 60px auto;
+    height: 780px;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -40px;
+}
+
+.nav-btn {
+    width: 50px;
+    height: 24px;
+    border: none;
+    font-size: 20px;
+    line-height: 25px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.days {
+    display: flex;
+    margin: 20px 0px;
+    font-size: 12px;
+    font-family: "Monomaniac One", sans-serif;
+}
+
+.day {
+    width: calc(100% / 7);
+    text-align: center;
+    font-family: "Monomaniac One", sans-serif;
+}
+
+.dates {
+    display: flex;
+    flex-flow: row wrap;
+    height: 680px;
+    border-top: 1px solid #333333;
+    border-right: 1px solid #333333;
+    border-color: #FFFFFF;
+    font-family: "Monomaniac One", sans-serif;
+}
+
+.date {
+    width: calc(100% / 7);
+    padding: 10px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #333333;
+    cursor: pointer;
+    border-color: #FFFFFF;
+    font-family: "Monomaniac One", sans-serif;
+}
+
+.day:nth-child(7n+ 1),
+.date:nth-child(7n + 1) {
+    color: #D13E3E;
+}
+
+.day:nth-child(7n),
+.date:nth-child(7n) {
+    color: #396EE2;
+}
+
+.other {
+    opacity: 0.3;
+}
+
+.today {
+    position: relative;
+    color: #FFFFFF;
+}
+
+.today::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    width: 23px;
+    height: 23px;
+    display: block;
+    background-color: #80A160;
+    border-radius: 50%;
+    content: '';
+}
+
+.bottom_menu {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 10%;
+    z-index: 100;
+    background-color: white;
+    font-family: "Monomaniac One", sans-serif;
+}
+
+.bottom_menu > div {
+    float: left;
+    width: 25%;
+    height: 100%;
+    text-align: center;
+    padding-top: 27px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.bottom_menu > div:not(:nth-child(2)) {
+    opacity: 0.7;
+}
+
+.bottom_menu > div:not(:nth-child(2)) img {
+    opacity: 0.7;
+}
+
+.bottom_menu > div:not(:nth-child(2)) p {
+    opacity: 0.7;
+}
+
+.bottom_menu img {
+    width: 18px;
+    height: 18px;
+    object-fit: cover;
+}
+
+.bottom_menu p {
+    font-size: 14px;
+    line-height: 25px;
+    color: black;
+}
