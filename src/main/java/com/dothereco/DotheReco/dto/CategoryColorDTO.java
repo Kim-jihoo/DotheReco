@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryColorRequest {
+public class CategoryColorDTO {
     private String categoryName;
     private Color selectedColor;
 }

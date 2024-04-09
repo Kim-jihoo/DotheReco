@@ -42,13 +42,13 @@ public class Fixed {
     @Column(name = "fixed_memo", columnDefinition = "text")
     private String fixedMemo;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Category_Code")
-    private Category category;*/ //카테고리 데이터가 없어서 우선 주석처리함.
+    private Category category;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Place_Code")
-    private Place place;*/
+    private Place place;
 
     @OneToMany (mappedBy = "fixedList2")
     private List<Connection2> connections2 = new ArrayList<>();

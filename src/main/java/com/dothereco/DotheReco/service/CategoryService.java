@@ -1,7 +1,6 @@
 package com.dothereco.DotheReco.service;
 
-import com.dothereco.DotheReco.domain.Color;
-import com.dothereco.DotheReco.dto.CategoryColorRequest;
+import com.dothereco.DotheReco.dto.CategoryColorDTO;
 import com.dothereco.DotheReco.repository.CategoryRepository;
 import com.dothereco.DotheReco.domain.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,7 @@ public class CategoryService {
         }
         return null;
     }
-    public Category selectColor(CategoryColorRequest request) {
+    public Category selectColor(CategoryColorDTO request) {
         Category category = new Category();
         category.setCategoryName(request.getCategoryName());
         category.setColor(request.getSelectedColor());

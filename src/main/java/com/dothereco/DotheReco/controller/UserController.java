@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
-import com.dothereco.DotheReco.dto.MemberFormDto;
+import com.dothereco.DotheReco.dto.MemberFormDTO;
 import com.dothereco.DotheReco.service.UserService;
 
 
@@ -23,8 +23,10 @@ public class UserController {
 
     //회원가입 페이지 띄워줌.
     @GetMapping("/signup/json")
-    public String signup(MemberFormDto memberFormDto) {
+
+    public String signup(MemberFormDTO memberFormDto) {
         return "signup";
+
     }
 
     //회원가입 처리 해주는 메서드
@@ -55,7 +57,7 @@ public class UserController {
     } */
 
     @PostMapping("/signup/json")
-    public ResponseEntity<String> signupJson(@RequestBody @Valid MemberFormDto memberFormDto, BindingResult bindingResult) {
+    public ResponseEntity<String> signupJson(@RequestBody @Valid MemberFormDTO memberFormDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body("입력한 정보가 올바르지 않습니다.");
         /*회원가입 화면 다시 보여주려면 : return "signup_form";*/
@@ -84,7 +86,4 @@ public class UserController {
             return ResponseEntity.badRequest().body("회원가입에 실패하였습니다.");
         }
     }
-
-
-
 }

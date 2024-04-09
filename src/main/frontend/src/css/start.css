@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+
 img {
-    width: 150px;
-    height: 100px;
+    width: 140px;
+    height: 90px;
     object-fit: cover;
     margin-top: 250px;
     margin-left: auto;
@@ -11,7 +13,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0; /* body의 기본 마진을 제거하여 화면을 꽉 채우도록 설정 */
+    margin: 0;
+}
+
+.gray-box{
+    text-align: center;
 }
 
 form {
@@ -19,8 +25,8 @@ form {
     text-align: center; /* 폼 내부 요소를 가운데 정렬 */
 }
 
-h1 {
-    font-size: 50px;
+.start-h1 {
+    font-size: 40px;
     color: #303030;
     line-height: 20px;
     text-align: center;
@@ -29,24 +35,23 @@ h1 {
     font-weight: 500;
 }
 
-button {
+.start-button {
+    display: inline-block;
+    padding: 2px 20px;
     border-radius: 20px;
-    padding: 5px 40px; /* 버튼 내부 여백을 조절 */
-    font-size: 20px;
+    border: none;
     background-color: #acada9;
     color: #ffffff;
-    border: none;
+    text-decoration: none;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-right: 20px;
-    width: 140px;
+    width: 60px;
     font-family: "Monomaniac One", sans-serif;
+    font-size: 15px;
+    font-weight: normal;
 }
 
-button:last-child {
-    margin-right: 0;
-}
-
-button:hover {
+.start-button:hover {
     background-color: #787977;
 }

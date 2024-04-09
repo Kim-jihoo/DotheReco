@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class MemberFormDto { //UserCreateForm과 동일
+public class MemberFormDTO { //UserCreateForm과 동일
 
     @NotEmpty(message = "아이디는 필수 항목입니다.")
     @Email //이메일 형식 맞는지 확인함.

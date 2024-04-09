@@ -1,11 +1,14 @@
-.container{
+@import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+
+.signup-container{
     width:800px;
     max-width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     box-sizing: border-box;
+    align-items: center;
 }
 
 #back-button {
@@ -22,7 +25,7 @@
     font-family: "Monomaniac One", sans-serif;
 }
 
-h1{
+.signup-h1{
     font-size: 25px;
     color: #303030;
     line-height: 30px;
@@ -32,38 +35,38 @@ h1{
     font-weight: 500;
 }
 
-input {
+.signup-input {
     border: none; /* 기본 테두리를 제거합니다. */
     border-bottom: 2px solid #acada9; /* 밑줄을 추가합니다. */
     padding: 5px; /* 내부 여백을 설정합니다. */
     font-size: 16px; /* 폰트 크기를 설정합니다. */
     margin-top: 16px;
     margin-bottom: 16px; /* 입력 요소 아래쪽 간격을 설정합니다. */
-    font-family: 'NanumSquareRound';
+    font-family: 'NanumSquareRound',sans-serif;
 }
 
-input[name="account"] {
+.signup-input[name="account"] {
     width: 45%;
 }
 
-input[name="password"] {
+.signup-input[name="password"] {
     width: 45%;
 }
 
-input[name="password2"] {
+.signup-input[name="password2"] {
     width: 45%;
 }
 
-input[name="nickname"] {
+.signup-input[name="nickname"] {
     width: 45%;
 }
 
-input:focus {
+.signup-input:focus {
     outline: none; /* 포커스 시 테두리를 제거합니다. */
     border-bottom-color: #787977; /* 포커스 시 밑줄 색상을 변경합니다. */
 }
 
-.input-container {
+.signup-input-container {
     position: relative;
     margin-bottom: 10px; /* 각 입력창의 아래 여백 */
 }
@@ -73,25 +76,16 @@ input:focus {
     margin-bottom: 5px; /* 라벨과 입력창 사이의 간격 조절 */
 }
 
-.alert-message {
-    color: #f09090;
-    font-size: 14px;
-    font-weight: 900;
-    position: absolute;
-    bottom: -20px; /* 입력창 아래에 위치 */
-    left: 125px;
-}
-
 div{
     font-size: 16px;
     font-weight: 900;
     color: #303030;
     line-height: 30px;
     text-align: center;
-    font-family: 'NanumSquareRound';
+    font-family: 'NanumSquareRound',sans-serif;
 }
 
-button {
+.signup-button {
     border-radius: 20px; /* 버튼을 라운드된 형태로 만듭니다. */
     padding: 5px 40px; /* 버튼 내부 여백을 조절합니다. */
     font-size: 16px; /* 버튼 텍스트의 크기를 조절합니다. */
@@ -102,10 +96,10 @@ button {
     margin-right: 20px;
     height: 37px;
     font-weight: 500;
-    font-family: 'NanumSquareRound';
+    font-family: 'NanumSquareRound',sans-serif;
 }
 
-button[type="submit"] {
+.signup-button[type="submit"] {
     display: block; /* 버튼을 블록 요소로 설정하여 중앙 정렬을 쉽게 합니다. */
     margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 가운데 정렬합니다. */
     margin-top: 16px;

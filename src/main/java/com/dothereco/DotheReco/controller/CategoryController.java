@@ -1,7 +1,7 @@
 package com.dothereco.DotheReco.controller;
 
 import com.dothereco.DotheReco.domain.Category;
-import com.dothereco.DotheReco.dto.CategoryColorRequest;
+import com.dothereco.DotheReco.dto.CategoryColorDTO;
 import com.dothereco.DotheReco.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id){
+    public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id){
         Category category = categoryService.getCategoryById(id);
         if(category !=null){
             return new ResponseEntity<>(category, HttpStatus.OK);
@@ -36,8 +36,8 @@ public class CategoryController {
         Category createdCategory = categoryService.createCategory(category);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
-    @PostMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails){
+    @PutMapping("/{id}")
+    public ResponseEntity<Category> updateCategory(@PathVariable("id") Long id, @RequestBody Category categoryDetails){
         Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
         if(updatedCategory !=null){
             return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
@@ -46,7 +46,7 @@ public class CategoryController {
     }
 
     @PostMapping("/select-color")
-    public ResponseEntity<Category> selectColor(@RequestBody CategoryColorRequest request){
+    public ResponseEntity<Category> selectColor(@RequestBody CategoryColorDTO request){
         Category createdCategory = categoryService.selectColor(request);
         if (createdCategory != null) {
             return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
@@ -54,7 +54,7 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteCategoryById(@PathVariable("id") Long id){
         boolean deleted = categoryService.deleteCategoryById(id);
         if(deleted){
             return new ResponseEntity<>((HttpStatus.NO_CONTENT));
