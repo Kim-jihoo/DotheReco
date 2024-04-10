@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,32 @@ public class FixedScheduleService {
     private final FixedScheduleRepository fixedScheduleRepository;
     private final FixedScheduleMapper fixedScheduleMapper;
     private final CategoryRepository categoryRepository;
+
+    private final ScheduleRecService scheduleRecService;
+
+    @Transactional(readOnly = true)
+    public List<TimeRange> recommendTimeSlotsForUser(Long userId, LocalDate date, Duration expectedDuration){
+        LocalDate startDate = date;
+        LocalDate endDate = date;
+       // List<Fixed> userSchedules = fixedScheduleRepository.findByUser_IdAndFixedStartDayBetween(userId, startDate, endDate);
+        List<Fixed> userSchedules = fixedScheduleRepository.findByFixedStartDayBetween(startDate, endDate);
+        List<TimeRange> busySlots = userSchedules.stream()
+                .map(schedule -> new TimeRange(schedule.getFixedStartTime(), schedule.getFixedEndTime()))
+                .collect(Collectors.toList());
+        return scheduleRecService.recommendTimeSlots(busySlots, expectedDuration);
+    }
+    @Transactional(readOnly = true)
+    public List<TimeRange> getBusyTimeSlots(Long userId, LocalDate date) {
+        LocalDate startDate = date;
+        LocalDate endDate = date.plusDays(1); // 같은 날짜를 의미합니다.
+       // List<Fixed> userSchedules = fixedScheduleRepository.findByUser_IdAndFixedStartDayBetween(userId, startDate, endDate);
+        List<Fixed> userSchedules = fixedScheduleRepository.findByFixedStartDayBetween(startDate, endDate);
+        List<TimeRange> busySlots = userSchedules.stream()
+                .map(schedule -> new TimeRange(schedule.getFixedStartTime(), schedule.getFixedEndTime()))
+                .collect(Collectors.toList());
+        return busySlots;
+    }
+
 
     @Transactional
     public Fixed addFixed(FixedScheduleDTO fixedScheduleDto) {
