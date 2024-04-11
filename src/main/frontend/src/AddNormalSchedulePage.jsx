@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import './css/addNormalCal.css'; // CSS 파일 import
@@ -48,7 +48,7 @@ const AddNormalSchedulePage = () => {
                     <input role="switch" className="addNor-repeat-toggle" type="checkbox" id="repeat-toggle" />
                 </div>
                 <div className="addNor-input-container">
-                    <label >제목</label>
+                    <label htmlFor="title-input">제목</label>
                     <input type="text" className="title-input" id="title-input" placeholder="제목" required />
                 </div>
                 <div className="addNor-input-container">
@@ -70,22 +70,22 @@ const AddNormalSchedulePage = () => {
                     </div>
                 </div>
                 <div className="addNor-input-container">
-                    <label>장소</label>
+                    <label htmlFor="location-input">장소</label>
                     <a href="location_page.html">
                         <input type="text" id="location-input" className="location-input" placeholder=">" value="기타" required />
                     </a>
                     <span className="addNor-arrow-icon">></span>
                 </div>
                 <div className="addNor-input-container">
-                    <label>카테고리</label>
+                    <label htmlFor="category-input">카테고리</label>
                     <a href="category_page.html">
                         <input type="text" id="category-input" className="category-input" placeholder="카테고리" value="기본 카테고리" required />
                     </a>
                     <span className="addNor-arrow-icon">></span>
                 </div>
                 <div className="addNor-input-container">
-                    <label>메모</label>
-                    <textarea id="memo-input" className="memo-input" rows="4" placeholder="메모" style={{ flex: 4 }} className="addNor-memo-input"></textarea>
+                    <label htmlFor="memo-input">메모</label>
+                    <textarea id="memo-input" className="addNor-memo-input" rows="4" placeholder="메모" style={{ flex: 4 }} ></textarea>
                 </div>
             </div>
         </div>
