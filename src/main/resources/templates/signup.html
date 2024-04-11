@@ -18,8 +18,10 @@
     </button>
     <h1>Sign up</h1>
     <hr />
-    <form action="signup.html" methods="POST">
-        <div class="input-container">
+   <!-- <form action="signup.html" methods="POST">
+    <form id="signupForm"> -->
+    <form id="signupForm" action="/api/user/signup/json" method="POST">
+    <div class="input-container">
             <label for="id-account"></label>
             <input type="text" name="account" placeholder="이메일" id="id-account" required="required" />
         </div>
@@ -41,9 +43,13 @@
                 사이트 이용약관과 개인정보 수집 방침에 동의합니다.
             </label>
         </div>
-        <button type="submit">완료</button>
+       <!-- <button type="submit">완료</button> -->
+        <!--<button type="button" onclick="submitForm()">완료</button>-->
+        <!--<button type="button" id="submitBtn">완료</button>-->
+        <button type="button" id="submitBtn" onclick="submitForm()">완료</button>
     </form>
-    <script type="text/javascript" src="/frontend/src/js/signup.js"></script>
+    <!--<script type="text/javascript" src="/frontend/src/js/signup.js"></script>-->
+    <script src="/frontend/src/js/signup.js"></script>
 </div>
 </body>
 

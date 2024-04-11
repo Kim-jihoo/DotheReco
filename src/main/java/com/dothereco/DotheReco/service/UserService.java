@@ -20,10 +20,9 @@ public class UserService {
 
 
 @Transactional
-    public User create(String userid, String username, String userpassword1, String usernickname) {
+    public User create(String userid, String userpassword1, String usernickname) {
         User user = new User();
         user.setUserId(userid);
-        user.setUserName(username);
         user.setUserPassword(passwordEncoder.encode(userpassword1));
         user.setUserNickName(usernickname);
         this.userRepository.save(user);

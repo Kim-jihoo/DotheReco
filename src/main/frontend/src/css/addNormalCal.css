@@ -1,0 +1,271 @@
+#back-button {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: #000;
+    padding: 10px;
+    font-weight: 500;
+    font-family: "Monomaniac One", sans-serif;
+}
+
+h1{
+    font-size: 22px;
+    font-weight: 900;
+    color: #303030;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 32px;
+    font-family: 'NanumSquareRound';
+    font-weight: 500;
+}
+
+/* 제출 버튼 */
+button[type="submit"] {
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    position: absolute;
+    top: 28px;
+    right: 20px;
+    font-size: 18px;
+    font-family: 'NanumSquareRound';
+}
+
+.container {
+    position: relative;
+    max-width: 500px; /* 최대 너비 지정 */
+    width: 80%;
+    margin: 16px auto;
+    margin-top: 30px;
+}
+
+.input-container{
+    margin-top: 10px;
+}
+
+input{
+    font-size: 12px;
+    font-family: 'NanumSquareRound';
+}
+
+#date-input, #location-input, #category-input {
+    cursor: pointer;
+}
+
+input[type="text"],
+textarea {
+    padding: 10px;
+    margin-top: 3px;
+    margin-bottom: 16px;
+    width: calc(100% - 20px); /* 부모 요소에 맞게 너비 지정 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 요소의 크기 계산 */
+    border: none;
+    font-family: 'NanumSquareRound', sans-serif; /* 폰트 설정 */
+    font-size: 14px; /* 폰트 크기 설정 */
+}
+
+input, textarea:focus {
+    outline: none; /* 입력 필드에 포커스 되었을 때 outline을 제거합니다. */
+}
+
+input#category-input::placeholder {
+    text-align: right;
+    color: #000;
+    opacity: 0.5;
+    font-family: 'NanumSquareRound', sans-serif; /* 폰트 설정 */
+}
+
+/* 장소 입력 필드의 Placeholder 스타일 */
+input#location-input::placeholder {
+    text-align: right;
+    color: #000;
+    opacity: 0.5;
+    font-family: 'NanumSquareRound', sans-serif; /* 폰트 설정 */
+}
+
+input#category-input::placeholder {
+    text-align: right;
+    color: #000;
+    opacity: 0.5;
+    font-family: 'NanumSquareRound', sans-serif; /* 폰트 설정 */
+}
+
+/* 장소 입력 필드의 Placeholder 스타일 */
+input#location-input::placeholder {
+    text-align: right;
+    color: #000;
+    opacity: 0.5;
+    font-family: 'NanumSquareRound', sans-serif; /* 폰트 설정 */
+}
+
+.repeat-toggle{
+    box-sizing: border-box;
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-size: 12px;
+}
+
+.time-toggle{
+    position: relative;
+    left: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-size: 12px;
+}
+
+[type="checkbox"]{
+    appearance: none; /*기본스타일 제거*/
+    /*알약스타일*/
+    position: relative;
+    border: max(2px, 0.1em) solid gray;
+    border-radius: 1.25em;
+    width: 2.25em;
+    height: 1.25em;
+}
+
+/*알약 안에서 좌우로 움직이는 엄지 스타일*/
+[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    transform: scale(0.8);
+    background-color: gray;
+    transition: left 250ms linear;
+}
+
+/*켜짐 상태 스타일*/
+[type="checkbox"]:checked::before {
+    background-color: white;
+    left: 1em;
+}
+
+[type="checkbox"]:checked {
+    background-color: #80A160;
+    border-color: #80A160;
+}
+
+/*불능 상태 스타일*/
+[type="checkbox"]:disabled {
+    border-color: lightgray;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+[type="checkbox"]:disabled:before {
+    background-color: lightgray;
+}
+
+[type="checkbox"]:disabled + span {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/*포커스 상태 스타일*/
+[type="checkbox"]:focus-visible {
+    outline-offset: max(2px, 0.1em);
+    outline: max(2px, 0.1em) solid tomato;
+}
+
+/*호버 상태 스타일*/
+[type="checkbox"]:enabled:hover {
+    box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+}
+
+.date-picker {
+    display: flex;
+    align-items: center;
+    font-family: 'NanumSquareRound', sans-serif;
+}
+
+.date-range-divider {
+    margin-top: -14px;
+    margin-left: -155px;
+}
+
+.date-picker-holder
+{
+    z-index: 9999 !important;
+    position: fixed;
+    background-color: Black;
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+}
+
+.date-picker-table {
+    cursor: pointer;
+    z-index: 99999 !important;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16); /* 그림자 효과 */
+    max-width: 80%; /* 최대 너비 지정 */
+    max-height: 80%; /* 최대 높이 지정 */
+    overflow: auto; /* 스크롤 설정 */
+}
+
+.date-picker-table table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 경계 스타일 설정 */
+}
+
+.date-picker-table td
+{
+    padding: 10px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .date-picker-table {
+        max-width: 90%;
+        max-height: 90%;
+    }
+}
+.datetime-picker{
+    display: none;
+    font-family: 'NanumSquareRound', sans-serif;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+}
+
+.datetime-range-divider {
+    display: flex;
+    align-items: center;
+    margin-top: -14px;
+}
+
+a {
+    text-decoration: none; /* 링크 텍스트의 밑줄 제거 */
+    color: inherit; /* 링크 텍스트의 색상을 상속하여 기존 스타일 유지 */
+}
+
+.arrow-icon a {
+    text-decoration: none; /* 링크 텍스트의 밑줄 제거 */
+    color: #000; /* 링크 텍스트 색상 지정 */
+}

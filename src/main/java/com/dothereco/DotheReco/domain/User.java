@@ -18,8 +18,6 @@ public class User{
     @Column(name = "user_id", nullable = false, unique = true) //unique 필요할 것 같아서 추가
     private String userId;
 
-    @Column(name = "user_name", nullable = false)
-    private String userName; //이거 필요 한가??우리 이름 안 받지 않어?
 
     @Column(name = "user_nickname", nullable = false)
     private String userNickName;

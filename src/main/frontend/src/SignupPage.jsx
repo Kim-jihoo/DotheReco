@@ -33,17 +33,22 @@ function SignupPage() {
         }
 
         try {
-            const response = await axios.post('http://localhost:8080/user/signup/json', {
+           // const response = await axios.post('http://localhost:8080/user/signup/json', {
+            const response = await axios.post('/api/user/signup/json', {
                 userid: formData.account,
-                username: formData.nickname,
+                usernickname: formData.nickname,
                 userpassword1: formData.password,
                 userpassword2: formData.password2
             });
             alert(response.data); // 회원가입 성공 메시지 출력
             // 회원가입 성공 후 필요한 작업 수행 (StartPage 페이지 이동)
         } catch (error) {
-            if (error.response) {
-                setErrorMessage(error.response.data); // 백엔드에서 전달된 에러 메시지 출력
+           /* if (error.response) {
+                setErrorMessage(error.response.data); // 백엔드에서 전달된 에러 메시지 출력*/
+            if (error.response && error.response.data) {
+                // 에러 메시지가 객체 형태로 오는 경우, 적절한 메시지로 변환
+                const errorMsg = error.response.data.error || '회원가입에 실패했습니다.';
+                setErrorMessage(errorMsg);
             } else {
                 setErrorMessage('서버 오류'); // 요청 실패 시 기본 에러 메시지
             }

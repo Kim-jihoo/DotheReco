@@ -8,14 +8,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class MemberFormDTO { //UserCreateForm과 동일
+public class UserFormDTO { //UserCreateForm과 동일
 
     @NotEmpty(message = "아이디는 필수 항목입니다.")
     @Email //이메일 형식 맞는지 확인함.
     private String userid;
-
-    @NotEmpty(message = "이름은 필수 항목입니다.")
-    private String username; //이거 필요 한가??우리 이름 안 받지 않어?
 
     @NotEmpty(message = "비밀번호는 필수 항목입니다.")
     @Length(min = 8, max = 16)

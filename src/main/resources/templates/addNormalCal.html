@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Normal Schedule</title>
+    <link rel="stylesheet" type="text/css" href="/frontend/src/css/addNormalCal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        @import url("https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css");
+        @import url("https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap");
+
+        /* 추가적인 CSS 스타일링 */
+        .hidden {
+            display: none; /* 요소 숨기기 */
+        }
+    </style>
+</head>
+
+<body>
+<form action="addNormalCal.html" method="post">
+    <button onclick="window.history.back()" class="back-button" id="back-button">
+        &lt;
+    </button>
+    <h1>일반스케줄 추가</h1>
+    <button type="submit">완료</button>
+    <div class="container">
+        <div class="repeat-toggle">
+            <span>반복 설정</span>
+            <input role="switch" type="checkbox" id="repeat-toggle">
+        </div>
+        <div class="input-container">
+            <label>제목</label>
+            <input type="text" name="title-input" id="title-input" placeholder="제목" required>
+        </div>
+        <div class="input-container">
+            <label>날짜 및 시간</label>
+            <div class="time-toggle">
+                <span>시간 설정</span>
+                <input role="switch" type="checkbox" id="time-toggle">
+            </div>
+            <br>
+            <div class="date-picker" id="date-picker">
+                <input class="startdate-picker" type="date-local" placeholder="시작 날짜">
+                <span class="date-range-divider">~</span>
+                <input class="enddate-picker" type="date-local" placeholder="종료 날짜">
+            </div>
+            <div class="datetime-picker" id="datetime-picker">
+                <input class="startdatetime-picker" type="datetime-local" placeholder="시작 날짜 및 시간">
+                <span class="datetime-range-divider">~</span>
+                <input class="enddatetime-picker" type="datetime-local" placeholder="종료 날짜 및 시간">
+            </div>
+        </div>
+        <div class="input-container">
+            <label>장소</label>
+            <a href="location_page.html">
+                <input type="text" id="location-input" name="location-input" placeholder=">" value="기타" required />
+            </a>
+            <span class="arrow-icon">></span>
+        </div>
+        <div class="input-container">
+            <label>카테고리</label>
+            <a href="category_page.html">
+                <input type="text" id="category-input" name="category-input" placeholder="카테고리" value="기본 카테고리" required />
+            </a>
+            <span class="arrow-icon">></span>
+        </div>
+        <div class="input-container">
+            <label>메모</label>
+            <textarea id="memo-input" name="memo-input" rows="4" placeholder="메모" style="flex: 4"></textarea>
+        </div>
+    </div>
+</form>
+<!-- 외부 JavaScript 파일 연결 -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/frontend/src/js/addNormalCal.js"></script>
+</body>
+
+</html>
