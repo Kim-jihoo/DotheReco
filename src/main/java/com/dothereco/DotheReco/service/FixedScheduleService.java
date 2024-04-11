@@ -59,9 +59,16 @@ public class FixedScheduleService {
     public Fixed addFixed(FixedScheduleDTO fixedScheduleDto) {
         Fixed fixed = fixedScheduleMapper.toEntity(fixedScheduleDto);
 
-        Category category = categoryRepository.findById(fixedScheduleDto.getCategoryCode())
+        /*Category category = categoryRepository.findById(fixedScheduleDto.getCategoryCode())
                 .orElseThrow(()->new EntityNotFoundException("카테고리가 존재하지 않습니다"+fixedScheduleDto.getCategoryCode()));
         fixed.setCategory(category);
+        return fixedScheduleRepository.save(fixed);*/
+        if (fixedScheduleDto.getCategoryCode() != null) { // 카테고리 코드 존재 여부 확인
+            Category category = categoryRepository.findById(fixedScheduleDto.getCategoryCode())
+                    .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다" + fixedScheduleDto.getCategoryCode()));
+            fixed.setCategory(category);
+        } // 카테고리 코드가 없으면 카테고리 설정을 생략
+
         return fixedScheduleRepository.save(fixed);
 
     }
@@ -90,9 +97,14 @@ public class FixedScheduleService {
         fixed.setFixedMemo(fixedScheduleDto.getFixedMemo());
 
         //카테고리 조회 및 설정
-        if(fixedScheduleDto.getCategoryCode() !=null){
+       /* if(fixedScheduleDto.getCategoryCode() !=null){
             Category category = categoryRepository.findById(fixedScheduleDto.getCategoryCode())
                     .orElseThrow(()->new EntityNotFoundException("카테고리를 찾을 수 없습니다" + fixedScheduleDto.getFixedCode()));
+            fixed.setCategory(category);
+        }*/
+        if (fixedScheduleDto.getCategoryCode() != null) {
+            Category category = categoryRepository.findById(fixedScheduleDto.getCategoryCode())
+                    .orElseThrow(() -> new EntityNotFoundException("카테고리를 찾을 수 없습니다" + fixedScheduleDto.getCategoryCode()));
             fixed.setCategory(category);
         }
 
