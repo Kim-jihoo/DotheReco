@@ -35,14 +35,14 @@
     font-weight: 500;
 }
 
-.signup-input {
+.singup-input {
     border: none; /* 기본 테두리를 제거합니다. */
     border-bottom: 2px solid #acada9; /* 밑줄을 추가합니다. */
     padding: 5px; /* 내부 여백을 설정합니다. */
     font-size: 16px; /* 폰트 크기를 설정합니다. */
     margin-top: 16px;
     margin-bottom: 16px; /* 입력 요소 아래쪽 간격을 설정합니다. */
-    font-family: 'NanumSquareRound',sans-serif;
+    font-family: 'NanumSquareRound', sans-serif;
 }
 
 .signup-input[name="account"] {
