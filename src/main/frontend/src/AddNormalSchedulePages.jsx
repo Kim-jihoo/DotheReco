@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-import './css/addNormalCal.css'; // CSS 파일 import
+import './css/addNormalCals.css'; // CSS 파일 import
 
-const AddNormalSchedulePage = () => {
+const AddNormalSchedulePages = () => {
     const [scheduleData, setScheduleData] = useState({
         fixedTitle: '',
         fixedStartDay: '',
@@ -57,8 +57,8 @@ const AddNormalSchedulePage = () => {
             enableTime: true,
             dateFormat: "Y년 m월 d일 H시 i분",
         };
-        flatpickr("input.startdatetime-picker", config2);
-        flatpickr("input.enddatetime-picker", config2);
+        flatpickr("input.startdatetime-pickers", config2);
+        flatpickr("input.enddatetime-pickers", config2);
 
         const timeToggle = document.getElementById('time-toggle');
         const datePicker = document.getElementById('date-picker');
@@ -100,7 +100,7 @@ const AddNormalSchedulePage = () => {
 
                 <div className="addNor-input-container">
                     <input type="text" className="fixedTitle" id="title" placeholder="제목"
-                            required/>
+                           required/>
                 </div>
                 <div className="addNor-input-container">
                     <label>날짜 및 시간</label>
@@ -117,10 +117,10 @@ const AddNormalSchedulePage = () => {
                                value={scheduleData.fixedEndDay} onChange={handleInputChange}/>
                     </div>
                     <div className="addNor-datetime-picker" id="datetime-picker">
-                        <input className="startdatetime-picker" type="datetime-local" placeholder="시작 날짜 및 시간"
+                        <input className="startdatetime-pickers" type="datetime-local" placeholder="2024년 04월 17일 11시 00분"
                                value={scheduleData.fixedStartTime} onChange={handleInputChange}/>
                         <span className="datetime-range-divider">~</span>
-                        <input className="enddatetime-picker" type="datetime-local" placeholder="종료 날짜 및 시간"
+                        <input className="enddatetime-pickers" type="datetime-local" placeholder="2024년 04월 17일 14시 00분"
                                value={scheduleData.fixedEndTime} onChange={handleInputChange}/>
                     </div>
                 </div>
@@ -145,5 +145,5 @@ const AddNormalSchedulePage = () => {
         </form>
     );
 };
-export default AddNormalSchedulePage;
+export default AddNormalSchedulePages;
 

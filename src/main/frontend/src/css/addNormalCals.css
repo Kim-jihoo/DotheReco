@@ -54,6 +54,16 @@
     font-weight: normal;
 }
 
+.startdatetime-pickers::placeholder{
+    color: #000000;
+    cursor:default;
+}
+
+.enddatetime-pickers::placeholder{
+    color: #000000;
+    cursor:default;
+}
+
 .addNor-input-container input,
 .addNor-input-container textarea {
     padding: 8px; /* 입력 요소에 내부 여백 추가 */

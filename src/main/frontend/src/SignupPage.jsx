@@ -66,9 +66,8 @@ function SignupPage() {
                 <div className="signup-input-container">
                     <label htmlFor="id-account"></label>
                     <input
-                        className="signup-input"
+                        className="signup-account"
                         type="text"
-                        name="account"
                         id="id-account"
                         placeholder="이메일"
                         value={formData.account}
@@ -79,9 +78,8 @@ function SignupPage() {
                 <div className="signup-input-container">
                     <label htmlFor="password-account"></label>
                     <input
-                        className="signup-input"
+                        className="signup-password"
                         type="password"
-                        name="password"
                         id="password-account"
                         placeholder="비밀번호"
                         value={formData.password}
@@ -92,9 +90,8 @@ function SignupPage() {
                 <div className="signup-input-container">
                     <label htmlFor="password2-account"></label>
                     <input
-                        className="signup-input"
+                        className="signup-password2"
                         type="password"
-                        name="password2"
                         id="password2-account"
                         placeholder="비밀번호 확인"
                         value={formData.password2}
@@ -105,9 +102,8 @@ function SignupPage() {
                 <div className="signup-input-container">
                     <label htmlFor="nickname-account"></label>
                     <input
-                        className="signup-input"
                         type="text"
-                        name="nickname"
+                        className="signup-nickname"
                         id="nickname-account"
                         placeholder="닉네임"
                         value={formData.nickname}
@@ -115,11 +111,10 @@ function SignupPage() {
                         required
                     />
                 </div>
-                <div>
+                <div className="signup-agree">
                     <input
-                        className="signup-input"
+                        className="signup-agreecheck"
                         type="checkbox"
-                        name="agree"
                         id="id-agree"
                         checked={formData.agree}
                         onChange={() => setFormData({ ...formData, agree: !formData.agree })}

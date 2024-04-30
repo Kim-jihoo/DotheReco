@@ -31,6 +31,7 @@
     line-height: 30px;
     text-align: center;
     margin-top: 30px;
+    margin-bottom: 20px;
     font-family: "Monomaniac One", sans-serif;
     font-weight: 500;
 }
@@ -40,9 +41,19 @@
     border-bottom: 2px solid #acada9; /* 밑줄을 추가합니다. */
     padding: 5px; /* 내부 여백을 설정합니다. */
     font-size: 16px; /* 폰트 크기를 설정합니다. */
-    margin-top: 16px;
+    margin-top: 20px;
     margin-bottom: 16px; /* 입력 요소 아래쪽 간격을 설정합니다. */
     font-family: 'NanumSquareRound', sans-serif;
+}
+
+.signup-agree{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-size: 16px;
 }
 
 .signup-input[name="account"] {
@@ -76,15 +87,6 @@
     margin-bottom: 5px; /* 라벨과 입력창 사이의 간격 조절 */
 }
 
-div{
-    font-size: 16px;
-    font-weight: 900;
-    color: #303030;
-    line-height: 30px;
-    text-align: center;
-    font-family: 'NanumSquareRound',sans-serif;
-}
-
 .signup-button {
     border-radius: 20px; /* 버튼을 라운드된 형태로 만듭니다. */
     padding: 5px 40px; /* 버튼 내부 여백을 조절합니다. */
@@ -105,6 +107,6 @@ div{
     margin-top: 16px;
 }
 
-button:hover {
+.signup-button:hover {
     background-color: #787977; /* 버튼에 마우스를 올렸을 때의 배경색을 설정합니다. */
 }

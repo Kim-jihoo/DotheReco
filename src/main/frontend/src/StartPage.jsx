@@ -5,9 +5,9 @@ import DotheRecoImage from './images/DotheReco_d.jpg';
 
 function StartPage() {
     return (
-        <div className="gray-box">
+        <div className="start-gray-box">
             <div>
-                <img src={DotheRecoImage} alt="두더리코 이미지"/>
+                <img className="start-img" src={DotheRecoImage} alt="두더리코 이미지"/>
                 <h1 className="start-h1">DotheReco</h1>
             </div>
             <div>

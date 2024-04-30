@@ -1,3 +1,6 @@
+@import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+
 .login-container{
     width:800px;
     max-width: 100%;
@@ -24,7 +27,7 @@
     font-family: "Monomaniac One", sans-serif;
 }
 
-h1{
+.login-h1{
     font-size: 25px;
     color: #303030;
     line-height: 30px;
@@ -44,25 +47,25 @@ input {
     font-family: 'NanumSquareRound',sans-serif;
 }
 
-.input-container {
+.login-input-container {
     position: relative;
     margin-bottom: 10px; /* 각 입력창의 아래 여백 */
 }
 
-.input-container label {
+.login-input-container label {
     display: block; /* 입력창과 라벨을 세로로 배치하기 위해 블록 요소로 설정 */
     margin-bottom: 5px; /* 라벨과 입력창 사이의 간격 조절 */
 }
 
-input[name="account"] {
+.login-input[name="account"] {
     width: 45%;
 }
 
-input[name="password"] {
+.login-input[name="password"] {
     width: 45%;
 }
 
-input:focus {
+.login-input:focus {
     outline: none; /* 포커스 시 테두리를 제거합니다. */
     border-bottom-color: #787977; /* 포커스 시 밑줄 색상을 변경합니다. */
 }
