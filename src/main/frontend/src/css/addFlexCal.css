@@ -1,0 +1,251 @@
+@import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+
+.addFlex-back-button {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: #000;
+    padding: 10px;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+}
+
+.addFlex-h1 {
+    font-size: 20px;
+    color: #303030;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 32px;
+    font-family: 'NanumSquareRound', sans-serif;
+}
+
+.addFlex-submit {
+    position: absolute;
+    top: 27px;
+    right: 30px;
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    font-size: 17px;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-weight: bold;
+}
+
+.addFlex-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.addFlex-input-container {
+    margin-top: 10px;
+    font-family: 'NanumSquareRound', sans-serif;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.addFlex-input-container input,
+.addFlex-input-container textarea {
+    padding: 8px;
+    border-radius: 4px;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-size: 14px;
+    margin-top: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+}
+
+.addFlex-input-container label {
+    margin-top: 15px;
+}
+
+.addFlex-date-picker,
+.addFlex-datetime-picker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.addFlex-date-range-divider,
+.addFlex-datetime-range-divider {
+    margin: 0 10px;
+}
+
+.addFlex-time-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-size: 12px;
+    gap: 0.5rem;
+}
+
+.addFlex-time-toggle [type="checkbox"] {
+    appearance: none;
+    position: relative;
+    border: max(2px, 0.1em) solid gray;
+    border-radius: 1.25em;
+    width: 2.25em;
+    height: 1.25em;
+}
+
+.addFlex-time-toggle [type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    transform: scale(0.8);
+    background-color: gray;
+    transition: left 250ms linear;
+}
+
+.addFlex-time-toggle [type="checkbox"]:checked::before {
+    background-color: white;
+    left: 1em;
+}
+
+.addFlex-time-toggle [type="checkbox"]:checked {
+    background-color: #80A160;
+    border-color: #80A160;
+}
+
+.addFlex-time-toggle [type="checkbox"]:disabled {
+    border-color: lightgray;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.addFlex-time-toggle [type="checkbox"]:disabled::before {
+    background-color: lightgray;
+}
+
+.addFlex-time-toggle [type="checkbox"]:focus-visible {
+    outline-offset: max(2px, 0.1em);
+    outline: max(2px, 0.1em) solid tomato;
+}
+
+.addFlex-time-toggle [type="checkbox"]:enabled:hover {
+    box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+}
+
+.hidden {
+    display: none;
+}
+
+.addFlex-input-container label,
+.addFlex-time-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.addFlex-input-container label {
+    margin-top: 15px;
+}
+
+.priority-selector {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Adjusting the gap between stars */
+}
+
+.star-icon {
+    font-size: 24px;
+}
+
+.addFlex-duration-picker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.addFlex-duration-picker {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 170px;
+    margin-bottom: 150px;
+}
+
+.addFlex-duration-picker label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.addFlex-duration-picker div {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* Adjusting the gap between time selectors */
+}
+
+.addFlex-duration-picker select {
+    padding: 5px;
+    font-size: 16px;
+    border:none;
+}
+
+.addFlex-duration-picker button {
+    background-color: #80A160;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.message {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.day-selector {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.day-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.day-circle.selected {
+    background-color: #80A160;
+    color: white;
+}

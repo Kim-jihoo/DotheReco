@@ -9,6 +9,12 @@
     flex-direction: column;
     box-sizing: border-box;
     align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    font-size: 16px;
+    color: #303030;
+    line-height: 30px;
+    font-family: 'NanumSquareRound',sans-serif;
 }
 
 #back-button {
@@ -21,8 +27,8 @@
     font-size: 30px;
     color: #000;
     padding: 10px;
-    font-weight: 500;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
 }
 
 .signup-h1{
@@ -33,7 +39,7 @@
     margin-top: 30px;
     margin-bottom: 20px;
     font-family: "Monomaniac One", sans-serif;
-    font-weight: 500;
+    font-weight: normal;
 }
 
 .singup-input {
@@ -97,7 +103,6 @@
     cursor: pointer; /* 커서를 포인터 형태로 변경하여 클릭 가능한 상태로 나타냅니다. */
     margin-right: 20px;
     height: 37px;
-    font-weight: 500;
     font-family: 'NanumSquareRound',sans-serif;
 }
 
@@ -109,4 +114,18 @@
 
 .signup-button:hover {
     background-color: #787977; /* 버튼에 마우스를 올렸을 때의 배경색을 설정합니다. */
+}
+
+.signup-account,
+.signup-password,
+.signup-password2,
+.signup-nickname,
+.signup-agreecheck{
+    border: none; /* 기본 테두리를 제거합니다. */
+    border-bottom: 2px solid #acada9; /* 밑줄을 추가합니다. */
+    padding: 5px; /* 내부 여백을 설정합니다. */
+    font-size: 16px; /* 폰트 크기를 설정합니다. */
+    margin-top: 16px;
+    margin-bottom: 16px; /* 입력 요소 아래쪽 간격을 설정합니다. */
+    font-family: 'NanumSquareRound',sans-serif;
 }

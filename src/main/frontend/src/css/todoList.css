@@ -1,0 +1,156 @@
+@import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.todolist-gray-box{
+    color: #303030;
+    line-height: 30px;
+    font-weight: normal;
+    width: 500px;
+    margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정 */
+}
+
+/*타임라인 헤더*/
+.todolist-header {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+.todolist-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 50px;
+    font-family: 'NanumSquareRound',sans-serif;
+}
+
+/*유동스케줄 헤더*/
+.flexible-schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 40px; /* 제목과 스케줄 박스 사이의 간격 */
+    font-family: 'NanumSquareRound', sans-serif;
+    font-size: 18px; /* 제목 크기 */
+    font-weight: bold;
+}
+
+/* + 아이콘 스타일 */
+.flexible-schedule-header img {
+    width: 25px; /* 아이콘 크기 */
+    height: 25px;
+    cursor: pointer; /* 클릭 가능하게 설정 */
+}
+
+.flexible-schedule-header img:hover {
+    opacity: 0.7; /* 호버 시 투명도 조정 */
+}
+
+/*메인 콘텐츠*/
+.todolist-content {
+    padding: 2px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 20px 0;
+    flex-grow: 1;
+    font-family: 'NanumSquareRound',sans-serif;
+    max-width: 600px;
+}
+
+.todolist-schedule-container {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.todo-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    font-family: 'NanumSquareRound',sans-serif;
+    padding: 7px 15px;
+    margin-bottom: 7px;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 하단 메뉴 바 그림자 */
+}
+
+.todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align items vertically */
+}
+
+.todo-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.todo-actions svg {
+    cursor: pointer;
+}
+
+.todolist-schedule-container::-webkit-scrollbar {
+    width: 5px; /* 스크롤바의 너비를 조정 */
+
+}
+
+.todolist-schedule-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 스크롤바의 트랙 배경색 */
+}
+
+.todolist-schedule-container::-webkit-scrollbar-thumb {
+    background: #888; /* 스크롤바의 색상 */
+    border-radius: 10px; /* 스크롤바의 모서리를 둥글게 만듦 */
+}
+
+.todolist-schedule-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 스크롤바 호버 시 색상 변경 */
+}
+
+/*하단 메뉴바*/
+.menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    cursor: pointer;
+
+}
+
+.menu-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+
+.menu p {
+    font-size: 14px;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+}

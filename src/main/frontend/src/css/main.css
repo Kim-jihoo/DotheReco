@@ -6,29 +6,30 @@
     box-sizing: border-box;
 }
 
-.main-gray-box {
-    justify-content: center;
+.main-gray-box{
+    max-width: 600px;
+    margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정 */
+    text-align: center;
     align-items: center;
-    margin:auto;
+    color: #303030;
+    line-height: 30px;
+    font-weight: normal;
 }
 
 /*우측 상단 이미지*/
-.top-right-images {
-    top: 20px; /* 원하는 상단 위치로 조정 */
-    right: 100px; /* 원하는 우측 위치로 조정 */
-    padding-left: 370px;
-    z-index: 1000; /* 다른 요소보다 위에 표시 */
+.main-top-right-images {
     margin-top: 20px;
+    position: relative;
+    margin-left: 60%;
 }
 
-.top-right-images img {
-    width: 30px;
-    height: 30px;
+.main-top-right-images img {
+    width: 25px;
+    height: 25px;
     margin-left: 20px; /* 이미지 사이의 간격 조정 */
-    cursor: pointer;
 }
 
-.top-right-images img:hover {
+.main-top-right-images img:hover {
     opacity: 0.7; /* 호버 시 투명도 조정 */
     cursor: pointer; /* 호버 시 커서 모양 변경 */
 }
@@ -42,10 +43,11 @@
 }
 
 /*search를 눌렀을 때 나오는 popup - 시간대 추천 mini calendar*/
-.search-popup-wrap {
+.search-popup-wrap,
+.searchList-popup-wrap{
     display: none;
-    width: 440px; /* 팝업창 너비 자동 조정 */
-    height: 743px; /* 팝업창 높이 자동 조정 */
+    width: 400px; /* 팝업창 너비 자동 조정 */
+    height: 600px; /* 팝업창 높이 자동 조정 */
     position: fixed;
     top: 48%; /* 화면 세로 중앙 정렬을 위해 top을 50%로 설정 */
     left: 50%;
@@ -57,41 +59,8 @@
     padding: 10px; /* 팝업 내부 여백 */
 }
 
-.searchList-popup-wrap {
-    display: none;
-    width: 440px; /* 팝업창 너비 자동 조정 */
-    height: 743px; /* 팝업창 높이 자동 조정 */
-    position: fixed;
-    top: 48%; /* 화면 세로 중앙 정렬을 위해 top을 50%로 설정 */
-    left: 50%;
-    transform: translate(-50%, -50%); /* 화면 가운데 정렬을 위해 translate 사용 */
-    background: #FFFFFF;
-    z-index: 1000; /* 다른 요소들보다 위에 표시되도록 높은 값 설정 */
-    border: 1px solid #333;
-    border-radius: 15px;
-    padding: 10px; /* 팝업 내부 여백 */
-}
-
-/*recommend list 꾸미기*/
-.recoLists {
-    line-height: 1.5;
-}
-
-.recoList {
-    border: 1px solid #ccc; /* 테두리 스타일 설정 */
-    border-radius: 10px; /* 테두리의 모서리를 둥글게 만듦 */
-    padding: 15px; /* 내부 여백 설정 */
-    margin-top: 25px;
-    font-family: 'NanumSquareRound', sans-serif;
-    margin-bottom: -8px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-    width: 90%;
-    cursor: pointer;
-    margin-left: 20px;
-}
-
-.recoList:hover{
-    background-color: #acada9;
+.estimatedTime-inputField label{
+    font-weight: bold;
 }
 
 .mini_back_bg{
@@ -112,6 +81,7 @@
 
 .mini_calendar {
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
     font-size: 15px;
     width: 90%;
     max-width: 600px;
@@ -123,7 +93,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: -40px;
+    margin-top: -50px;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 .mini_nav-btn {
@@ -141,34 +114,37 @@
     margin: 10px;
     font-size: 12px;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
 }
 
 .mini_day {
     width: calc(100% / 7);
     text-align: center;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+    font-size: 15px;
+    margin-bottom: -20px;
 }
 
 .mini_dates {
     display: flex;
     flex-flow: row wrap;
     height: 300px;
-    border-top: 1px solid #333333;
-    border-right: 1px solid #333333;
-    border-color: #FFFFFF;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+
 }
 
 .mini_date {
     width: calc(100% / 7);
-    padding: 10px;
-    font-size: 13px;
+    padding: 11px;
+    font-size: 15px;
     text-align: center;
-    border-bottom: 1px solid #333333;
-    border-left: 1px solid #333333;
     cursor: pointer;
     border-color: #FFFFFF;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+
 }
 
 .mini_day:nth-child(7n+ 1),
@@ -190,48 +166,38 @@
     opacity: 0.3;
 }
 
-/* main.css 파일에 추가 */
 .mini_date.selected {
     background-color: #80A160; /* 선택된 날짜의 배경색 */
-    color: #ffffff; /* 선택된 날짜의 텍스트 색상 */
-    border-radius: 50%; /* 선택된 날짜의 테두리를 둥글게 만듦 */
+    color: white; /* 선택된 날짜의 텍스트 색상 */
+    border-radius: 40%;
+}
+
+.mini_date {
+    user-select: none; /* 드래그 중 텍스트가 선택되지 않도록 */
 }
 
 /*예상 소요시간 버튼*/
-.time-picker{
+.search-time-popup-wrap{
     text-align: center;
     margin-top: -50px;
 }
 
-.estimatedTime{
+.estimatedTime-inputField{
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가운데 정렬 */
+    border-color: #acada9;
+}
+
+.estimatedTime-inputField input {
+    width: 100px; /* input width 줄이기 */
+    margin-bottom: 10px; /* 버튼과 간격을 두기 위해 추가 */
+    margin-top:10px;
+    font-size: 15px;
     text-align: center;
 }
 
-.time-buttons {
-    margin-top: 10px;
-    text-align: center;
-}
-
-.time-buttons button {
-    margin-top: 5px;
-    margin-right: 10px; /* 버튼들 사이의 우측 마진 설정 */
-    border-radius: 10px;
-    background-color: #acada9;
-    border: none;
-    font-size: 14px;
-    width: 90px;
-    height: 28px;
-    font-family: 'NanumSquareRound', sans-serif;
-    cursor: pointer;
-}
-
-/* 마지막 버튼의 우측 마진을 제거하기 위한 CSS */
-.time-buttons button:last-child {
-    margin-top: 10px;
-    margin-right: 0; /* 마지막 버튼의 우측 마진 제거 */
-}
-
-.estimated-submit{
+.estimated-submit {
     border-radius: 5px;
     font-family: 'NanumSquareRound', sans-serif;
     border: none;
@@ -240,6 +206,7 @@
     height: 35px;
     cursor: pointer;
     margin-top: 20px;
+    align-self: center; /* 가운데 정렬 */
 }
 
 /*addSchedule을 눌렀을 때 나오는 popup*/
@@ -284,18 +251,15 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-
     z-index: 999; /* Ensure it covers other elements */
     display: none; /* Initially hidden */
 }
 
-
 .calendar {
-    font-family: "Monomaniac One", sans-serif;
-    font-size: 20px;
-    width: 94%;
+    font-family: 'NanumSquareRound',sans-serif;
+    font-size: 18px;
+    width: 80%;
     max-width: 500px;
-    height: 780px;
     text-align: center;
     margin:auto;
 }
@@ -305,13 +269,15 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
+    font-family: 'NanumSquareRound',sans-serif;
+    font-weight: bold;
 }
 
 .nav-btn {
     width: 50px;
     height: 24px;
     border: none;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 25px;
     background-color: transparent;
     cursor: pointer;
@@ -325,37 +291,36 @@
 .days {
     display: flex;
     margin: 5px 0;
-    font-size: 12px;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+
 }
 
 .day {
     width: calc(100% / 7);
-    text-align: center;
     font-family: "Monomaniac One", sans-serif;
-    margin-top: 12px;
+    margin-bottom: -10px;
+    font-size: 14px;
 }
 
 .dates {
     display: flex;
     flex-flow: row wrap;
-    height: 680px;
-    border-top: 1px solid #333333;
-    border-right: 1px solid #333333;
-    border-color: #FFFFFF;
+    height: 750px;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+
 }
 
 .date {
     width: calc(100% / 7);
     padding: 10px;
-    font-size: 13px;
+    font-size: 12px;
     text-align: center;
-    border-bottom: 1px solid #333333;
-    border-left: 1px solid #333333;
     cursor: pointer;
-    border-color: #FFFFFF;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+
 }
 
 .day:nth-child(7n+ 1),
@@ -393,44 +358,125 @@
     border: none;
 }
 
+.day {
+    position: relative;
+    padding-bottom: 5px; /* 아래로 5px씩 내려가도록 추가 */
+}
+
+.event-title {
+    line-height: 22px; /* 텍스트의 수직 중앙 정렬을 위한 높이 설정 */
+    font-family: 'NanumSquareRound', sans-serif;
+    font-weight: bold;
+}
+
+.event-indicator {
+    width: 60px;
+    height: 20px;
+    background-color: #DBE9CD;
+    position: absolute;
+    border-radius: 10%;
+    left: 5px;
+}
+
+/* 제목의 길이를 제한하고, 오버플로우가 생기면 생략 표시(...)를 추가 */
+.event-indicator .event-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* 필요에 따라 조정 가능 */
+    font-size: 12px;
+}
+
+/* 한 날짜 칸에 일정이 많을 경우 세로 스크롤이 생기도록 설정 */
+.day .event-indicator-container {
+    max-height: 75px; /* 필요에 따라 조정 가능 */
+    overflow-y: auto;
+}
+
+/*예상소요시간 입력*/
+.main-estimated-picker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-estimated-picker {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 170px;
+    margin-bottom: 150px;
+}
+
+.main-estimated-picker label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.main-estimated-picker div {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* Adjusting the gap between time selectors */
+}
+
+.main-estimated-picker select {
+    padding: 5px;
+    font-size: 16px;
+    border:none;
+}
+
+.main-estimated-picker button {
+    background-color: #80A160;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
 /*하단 메뉴바*/
 
-.footer {
+.menu {
     display: flex;
-    padding-top: 20px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 60px;
-    z-index: 100;
-    background-color: white;
-    font-family: "Monomaniac One", sans-serif;
-    justify-content: space-around;
+    cursor: pointer;
+
 }
 
-.footer > div:not(:nth-child(2)) {
-    opacity: 0.7;
+.menu-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.footer > div:not(:nth-child(2)) img {
-    opacity: 0.7;
-}
-
-.footer > div:not(:nth-child(2)) p {
-    opacity: 0.7;
-}
-
-.footer img {
-    width: 22px;
-    height: 22px;
+.menu-icon {
+    width: 35px;
+    height: 35px;
     object-fit: cover;
-    cursor: pointer;
+    margin-bottom: 5px;
 }
 
-.footer p {
+.menu p {
     font-size: 14px;
-    color: #333333;
-    margin: 0;
-    cursor: pointer;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
 }
+
 

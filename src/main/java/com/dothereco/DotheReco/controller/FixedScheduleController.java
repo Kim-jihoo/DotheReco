@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -44,4 +45,13 @@ public class FixedScheduleController {
         fixedScheduleService.addFixed(fixedScheduleDto);
         return ResponseEntity.ok("일정추가가 완료되었습니다.");
     }
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<FixedScheduleDTO>> getFixedSchedulesByDate(@PathVariable("date") LocalDate date) {
+        List<FixedScheduleDTO> schedules = fixedScheduleService.getFixedSchedulesByDate(date);
+        if (schedules.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(schedules);
+    }
+
 }

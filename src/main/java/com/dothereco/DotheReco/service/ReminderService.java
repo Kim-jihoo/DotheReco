@@ -5,8 +5,11 @@ import com.dothereco.DotheReco.repository.ReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 /*예외 처리,관계 설정(ManyToOne 처리 -> @Transactional 고려해보기 */
 @Service
 public class ReminderService {
@@ -43,4 +46,11 @@ public class ReminderService {
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 일정입니다." + id));
         reminderRepository.delete(reminder);
     }
+
+    public List<Reminder> getRemindersByDate(LocalDate date){
+        return reminderRepository.findAll().stream()
+                .filter(reminder -> reminder.getReminderDate().equals(date))
+                .collect(Collectors.toList());
+    }
+
 }

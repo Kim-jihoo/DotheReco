@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import './css/main.css';
 import searchImage from './images/search.png';
 import addScheduleImage from './images/addSchedule.png';
@@ -10,33 +10,129 @@ import TodoListImage from './images/할 일 list.png';
 
 const Main = () => {
     const [date, setDate] = useState(new Date());
-    const [mini_date, mini_setDate]=useState(new Date());
-    const [estimatedTime, setEstimatedTime] = useState('');
-    const [selectedMiniDates, setSelectedMiniDates] = useState([]); // 여러 날짜 선택을 위한 배열
-    const navigate=useNavigate();
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [mini_date, mini_setDate] = useState(new Date());
+    const [selectedMiniDates, setSelectedMiniDates] = useState([]);
+    const navigate = useNavigate();
+    const [isDragging, setIsDragging] = useState(false);
+    const selectedDatesRef = useRef(new Set());
+    const [events, setEvents] = useState([]);
+    const location = useLocation();
+
+    const [showEstimatedPicker, setShowEstimatedPicker] = useState(false);
+    const [selectedEstimated, setSelectedEstimated] = useState('');
+
+    const getCategoryColor = (categoryCode) => {
+        // 카테고리 코드에 따라 다른 색상을 반환
+        switch (categoryCode) {
+            case 1:
+                return '#F0CAB9'; // 카테고리 코드 1에 대한 색상
+            case 2:
+                return '#FAE4A8'; // 카테고리 코드 2에 대한 색상
+            case 3:
+                return '#B9DEF0' //카테고리 코드 3에 대한 색상
+            default:
+                return '#DBE9CD'; // 기본 색상
+        }
+    };
+
+// 외부 페이지에서 전달받은 데이터 처리
+    useEffect(() => {
+        // 기존 이벤트 목록을 가져옵니다.
+        const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+        setEvents(storedEvents);
+
+        // 새로운 이벤트가 전달되었는지 확인하고, 이벤트 목록에 추가
+        if (location.state && location.state.newEvent) {
+            const newEvent = location.state.newEvent;
+            // 이미 같은 날짜에 해당하는 이벤트가 있는지 확인합니다.
+            const existingEvent = storedEvents.find(event => {
+                const eventStartDate = new Date(event.fixedStartDay);
+                const newEventStartDate = new Date(newEvent.fixedStartDay);
+                return eventStartDate.toDateString() === newEventStartDate.toDateString();
+            });
+            // 중복된 이벤트가 없는 경우에만 추가합니다.
+            if (!existingEvent) {
+                const updatedEvents = [...storedEvents, newEvent];
+                setEvents(updatedEvents);
+                localStorage.setItem('events', JSON.stringify(updatedEvents));
+            }
+        }
+    }, [location.state]);
+
+    //localStorage.clear();
 
     const renderCalendar = () => {
+        // 현재 날짜와 이벤트 목록을 가져옵니다.
         const viewYear = date.getFullYear();
         const viewMonth = date.getMonth();
         const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-        const firstDayOfWeek = new Date(viewYear, viewMonth, 1).getDay();
+        const startDay = new Date(viewYear, viewMonth, 1).getDay();
 
         const days = [];
-        for (let i = firstDayOfWeek; i > 0; i--) {
+        // 캘린더에 빈 칸을 추가합니다.
+        for (let i = 0; i < startDay; i++) {
             days.push('');
         }
+
+        // 캘린더에 해당 월의 날짜를 추가합니다.
         for (let i = 1; i <= daysInMonth; i++) {
             days.push(i);
         }
 
+        // 캘린더에 빈 칸을 추가하여 행을 완성합니다.
+        const remainingDays = 7 - (days.length % 7);
+        if (remainingDays < 7) {
+            for (let i = 0; i < remainingDays; i++) {
+                days.push('');
+            }
+        }
+
+        // 각 날짜를 렌더링합니다.
         return days.map((day, index) => {
-            const main_today = new Date();
-            const isToday = main_today.getFullYear() === viewYear && main_today.getMonth() === viewMonth && day === main_today.getDate();
-            const className = day === '' ? 'other' : 'this';
+            const currentDate = new Date(viewYear, viewMonth, day);
+            const isToday = new Date().toDateString() === currentDate.toDateString();
+            const flexEvents = events.filter(event => event.flexDeadline && new Date(event.flexDeadline).toDateString() === currentDate.toDateString());
+            const eventList = events.filter(event => {
+                const eventStartDate = new Date(event.fixedStartDay);
+                return eventStartDate.toDateString() === currentDate.toDateString();
+            }).sort((a, b) => {
+                // 이벤트를 시작 시간 순으로 정렬합니다.
+                const aStartTime = new Date(`${a.fixedStartDay}T${a.fixedStartTime}`);
+                const bStartTime = new Date(`${b.fixedStartDay}T${b.fixedStartTime}`);
+                return aStartTime - bStartTime;
+            });
+
             return (
-                <div key={index} className="date">
-                    <span className={`${className} ${isToday ? 'main_today' : ''}`}>{day === '' ? ' ' : day}</span>
+                <div key={index} className={`day ${isToday ? 'today' : ''}`}>
+                    {day}
+                    <div className="event-indicator-container">
+                        {/* 유동 스케줄 표시 */}
+                        {flexEvents.map((event, eventIndex) => (
+                            <div
+                                key={eventIndex}
+                                className="event-indicator"
+                                style={{
+                                    top: `${(eventIndex + 1) * 25}px`,
+                                    backgroundColor: getCategoryColor(event.categoryCode)
+                                }}
+                            >
+                                <div className="event-title">{event.flexTitle}</div>
+                            </div>
+                        ))}
+                        {/* 일반 스케줄 표시 */}
+                        {eventList.map((event, eventIndex) => (
+                            <div
+                                key={eventIndex}
+                                className="event-indicator"
+                                style={{
+                                    top: `${(eventIndex + 1) * 25}px`,
+                                    backgroundColor: getCategoryColor(event.categoryCode)
+                                }}
+                            >
+                                <div className="event-title">{event.fixedTitle}</div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             );
         });
@@ -66,15 +162,27 @@ const Main = () => {
             mini_days.push(i);
         }
 
-        const handleMiniDateClick = (day) => {
-            const index = selectedMiniDates.indexOf(day);
-            if (index === -1) {
-                setSelectedMiniDates([...selectedMiniDates, day]);
-            } else {
-                const updatedDates = [...selectedMiniDates];
-                updatedDates.splice(index, 1);
-                setSelectedMiniDates(updatedDates);
+        const handleMouseDown = (day) => {
+            if (day !== '') {
+                if (selectedDatesRef.current.has(day)) {
+                    selectedDatesRef.current.delete(day);
+                } else {
+                    selectedDatesRef.current.add(day);
+                }
+                setSelectedMiniDates(Array.from(selectedDatesRef.current));
             }
+            setIsDragging(true);
+        };
+
+        const handleMouseOver = (day) => {
+            if (isDragging && day !== '') {
+                selectedDatesRef.current.add(day);
+                setSelectedMiniDates(Array.from(selectedDatesRef.current));
+            }
+        };
+
+        const handleMouseUp = () => {
+            setIsDragging(false);
         };
 
         return mini_days.map((mini_day, mini_index) => {
@@ -85,7 +193,9 @@ const Main = () => {
                 <div
                     key={mini_index}
                     className={`mini_date ${isSelected ? 'selected' : ''}`}
-                    onClick={() => handleMiniDateClick(mini_day)}
+                    onMouseDown={() => handleMouseDown(mini_day)}
+                    onMouseOver={() => handleMouseOver(mini_day)}
+                    onMouseUp={handleMouseUp}
                 >
                     <span className={`${mini_className}`}>{mini_day === '' ? ' ' : mini_day}</span>
                 </div>
@@ -104,101 +214,90 @@ const Main = () => {
     };
 
     const onAddScheduleClick = () => {
-        // 팝업 창을 열기 위해 상태 변경
         document.querySelector('.addSche-popup-wrap').style.display = 'block';
         document.querySelector('.back-bg').style.display = 'block';
     };
 
-    const onSearchClick=()=>{
-        document.querySelector('.search-popup-wrap').style.display='block';
+    const onSearchClick = () => {
+        document.querySelector('.search-popup-wrap').style.display = 'block';
         document.querySelector('.back-bg').style.display = 'block';
-    }
-
-    const togglePopupVisibility = () => {
-        setIsPopupVisible(!isPopupVisible);
-
-        // 팝업이 열리면 뒷 배경 표시
-        const backBg = document.querySelector('.back-bg');
-        backBg.style.display = isPopupVisible ? 'none' : 'block';
     };
 
-    const onBackClick=()=>{
+    const onBackClick = () => {
         document.querySelector('.addSche-popup-wrap').style.display = 'none';
-        document.querySelector('.search-popup-wrap').style.display='none';
-        document.querySelector('.searchList-popup-wrap').style.display='none';
+        document.querySelector('.search-popup-wrap').style.display = 'none';
+        document.querySelector('.searchList-popup-wrap').style.display = 'none';
         document.querySelector('.back-bg').style.display = 'none';
-    }
-
-    const onRecommendClick=()=>{
-        document.querySelector('.search-popup-wrap').style.display='none';
-        document.querySelector('.searchList-popup-wrap').style.display='block';
-        document.querySelector('.back-bg').style.display = 'block';
-    }
-    const goToAddNormalSchedule = () => {
-        // 버튼 클릭 시 '/addNormalSchedule' 경로로 이동
-        navigate('/addNormalSchedule');
     };
+
+    const onRecommendClick = () => {
+        document.querySelector('.search-popup-wrap').style.display = 'none';
+        document.querySelector('.searchList-popup-wrap').style.display = 'block';
+        document.querySelector('.back-bg').style.display = 'block';
+    };
+
+    const goToaddNormalSchedule = () => {
+        // "일반 스케줄 추가" 버튼을 누를 때 기존의 일정들을 유지하기 위해 새로운 이벤트를 추가하지 않습니다.
+        navigate('/addNormalSchedule', { state: { events: events } });
+    };
+
+    const goToAddFlexSchedule = () => {
+        // "일반 스케줄 추가" 버튼을 누를 때 기존의 일정들을 유지하기 위해 새로운 이벤트를 추가하지 않습니다.
+        navigate('/addFlexSchedule', { state: { events: events } });
+    };
+
+    const goToTimeLine=()=>{
+        navigate('/timeLine');
+    }
 
     const goToCalendar = () => {
-        navigate('/main');
+        navigate('/Main');
     };
 
-    const goBack=()=>{
-        document.querySelector('.search-popup-wrap').style.display='block';
-        document.querySelector('.searchList-popup-wrap').style.display='none';
-        document.querySelector('.back-bg').style.display = 'block';
+    const goToToDoList=()=>{
+        navigate('/ToDoList');
     }
 
-    const enableManualInput = () => {
-        const inputField = document.getElementById('estimatedTimeInput');
-        inputField.disabled = false;
-        inputField.value = ''; // 입력 초기화
-        inputField.focus(); // 입력 필드에 포커스
+    const goToSetting=()=>{
+        navigate('/Setting');
+    }
 
-        // 'input' 이벤트 발생 시 호출될 이벤트 핸들러
-        const handleInput = (event) => {
-            const value = event.target.value;
-            const formattedValue = value.replace(/[^\d]/g, ''); // 숫자 이외의 문자 제거
-            event.target.value = formattedValue; // 숫자만 입력된 값으로 설정
-        };
-
-        /*
-        // 'blur' 이벤트 발생 시 호출될 이벤트 핸들러
-        const handleBlur = (event) => {
-            const value = event.target.value.trim(); // 앞뒤 공백 제거
-            if (value !== '') {
-                event.target.value = value + '시간'; // 입력된 값 뒤에 "시간" 추가
-            }
-            inputField.removeEventListener('blur', handleBlur);
-        };*/
-
-        // 'input' 이벤트 리스너 등록
-        inputField.addEventListener('input', handleInput);
-
-        // 'blur' 이벤트 리스너 등록
-        inputField.addEventListener('blur', handleBlurOnce); // 수정된 부분
+    const goBack = () => {
+        document.querySelector('.search-popup-wrap').style.display = 'block';
+        document.querySelector('.searchList-popup-wrap').style.display = 'none';
+        document.querySelector('.back-bg').style.display = 'block';
     };
 
-// blur 이벤트 핸들러를 한 번만 실행하고 제거하는 함수
-    const handleBlurOnce = (event) => {
-        const inputField = event.target;
-        inputField.removeEventListener('blur', handleBlurOnce); // blur 이벤트 리스너 제거
-
-        const value = inputField.value.trim(); // 앞뒤 공백 제거
-        if (value !== '') {
-            inputField.value = value + '시간'; // 입력된 값 뒤에 "시간" 추가
+    useEffect(() => {
+        // 새로운 이벤트가 추가되면 이를 캘린더에 반영
+        if (location.state && location.state.newEvent) {
+            const newEvent = location.state.newEvent;
+            const updatedEvents = [...events, newEvent];
+            setEvents(updatedEvents);
         }
+    }, [location.state]);
+
+    useEffect(() => {
+        // 페이지를 새로고침할 때마다 로컬 스토리지에서 이전에 저장된 이벤트 목록을 가져와서 캘린더에 표시합니다.
+        const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+        setEvents(storedEvents);
+    }, []);
+
+    const handleEstimatedClick = () => {
+        setShowEstimatedPicker(true);
     };
 
-
-    const handleSetEstimatedTime = (time) => {
-        setEstimatedTime(time); // 예상 소요 시간 설정
+    const handleEstimatedChange = () => {
+        const hours = document.getElementById('main-estimated-hours').value || '00';
+        const minutes = document.getElementById('main-estimated-minutes').value || '00';
+        setSelectedEstimated(`${hours}:${minutes}`);
+        setShowEstimatedPicker(false);
     };
 
     return (
         <div className="main-gray-box">
             {/*우측 상단 이미지*/}
-            <div className="top-right-images">
+            <div className="main-top-right-images">
                 <img id="popup-search" src={searchImage} alt="Search" onClick={onSearchClick}/>
                 <img id="popup-addSchedule" src={addScheduleImage} alt="Add Schedule" onClick={onAddScheduleClick}/>
             </div>
@@ -232,32 +331,34 @@ const Main = () => {
                 </div>
 
                 {/*시간대 추천 팝업 창*/}
-                <div className="time-picker" id="time-picker">
+                <div className="search-time-popup-wrap">
                     <div className="estimatedTime-inputField">
                         <label>예상소요시간</label>
-                        <input
-                            type="text"
-                            id="estimatedTimeInput"
-                            className="estimatedTime"
-                            value={estimatedTime}
-                            disabled // 초기에는 비활성화 상태
-                        />
+                        <input type="text" className="mainTimePicker" name="mainTimePicker" id="mainTimePicker"
+                               placeholder="시간 선택" value={selectedEstimated}
+                               onClick={handleEstimatedClick} readOnly/>
+                        <button className="estimated-submit" type="submit" onClick={onRecommendClick}>추천</button>
                     </div>
-                    <div id="estimatedTimeWrapper">
-                        <span id="estimatedTimeDisplay"></span>
-                    </div>
-                    <div className="time-buttons">
-                        <button onClick={() => handleSetEstimatedTime('1시간')}>1시간</button>
-                        <button onClick={() => handleSetEstimatedTime('1시간 30분')}>1시간 30분</button>
-                        <button onClick={() => handleSetEstimatedTime('2시간')}>2시간</button>
-                        <button onClick={() => handleSetEstimatedTime('2시간 30분')}>2시간 30분</button>
-                        <button onClick={() => handleSetEstimatedTime('3시간')}>3시간</button>
-                        <button onClick={() => handleSetEstimatedTime('3시간 30분')}>3시간 30분</button>
-                        <button onClick={() => handleSetEstimatedTime('4시간')}>4시간</button>
-                        <button onClick={() => handleSetEstimatedTime('4시간 30분')}>4시간 30분</button>
-                        <button onClick={enableManualInput}>직접 입력</button>
-                    </div>
-                    <button className="estimated-submit" type="submit" onClick={onRecommendClick}>추천</button>
+                    {showEstimatedPicker && (
+                        <div className="main-estimated-picker-overlay" onClick={() => setShowEstimatedPicker(false)}>
+                            <div className="main-estimated-picker" onClick={e => e.stopPropagation()}>
+                                <label>시간 선택</label>
+                                <div>
+                                    <select id="main-estimated-hours">
+                                        {[...Array(12).keys()].map(i => (
+                                            <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                        ))}
+                                    </select> :
+                                    <select id="main-estimated-minutes">
+                                        {[...Array(12).keys()].map(i => (
+                                            <option key={i * 5} value={(i * 5).toString().padStart(2, '0')}>{(i * 5).toString().padStart(2, '0')}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <button onClick={handleEstimatedChange}>확인</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -267,39 +368,13 @@ const Main = () => {
                 <button className="search-back-button" id="back-button" onClick={goBack}>
                     &lt;
                 </button>
-                <div className="recoLists">
-                    <div className="recoList">
-                        <p className="dateText">날짜: 2024년 04월 15일 월요일</p>
-                        <p className="timeText">시간: 8:00 AM - 11:00 AM</p>
-                    </div>
-                    <div className="recoList">
-                        <p className="dateText">날짜: 2024년 04월 15일 월요일</p>
-                        <p className="timeText">시간: 8:00 PM - 11:00 PM</p>
-                    </div>
-                    <div className="recoList">
-                        <p className="dateText">날짜: 2024년 04월 17일 수요일</p>
-                        <p className="timeText">시간: 11:00 AM - 2:00 PM</p>
-                    </div>
-                    <div className="recoList">
-                        <p className="dateText">날짜: 2024년 04월 17일 수요일</p>
-                        <p className="timeText">시간: 8:00 PM - 12:00 AM</p>
-                    </div>
-                    <div className="recoList">
-                        <p className="dateText">날짜: 2024년 04월 19일 금요일</p>
-                        <p className="timeText">시간: 8:00 AM - 2:00 PM</p>
-                    </div>
-                    <div className="recoList">
-                        <p className="dateText">날짜: 2024년 04월 19일 금요일</p>
-                        <p className="timeText">시간: 3:00 PM - 11:00 PM</p>
-                    </div>
-                </div>
             </div>
 
             {/*addSchedule 눌렀을 때 뜨는 팝업 창*/}
             <div className="addSche-popup-wrap">
                 <div className="addSche-button-container">
-                    <button className="addNormalSchedule-Button" onClick={goToAddNormalSchedule}>일반 스케줄 추가</button>
-                    <button>유동 스케줄 추가</button>
+                    <button className="addNormalSchedule-Button" onClick={goToaddNormalSchedule}>일반 스케줄 추가</button>
+                    <button className="addFlexSchedule-Button" onClick={goToAddFlexSchedule}>유동 스케줄 추가</button>
                     <button>리마인더 추가</button>
                 </div>
             </div>
@@ -330,26 +405,26 @@ const Main = () => {
                     <div className="dates">{renderCalendar()}</div>
                 </div>
             </div>
+
             {/*하단 메뉴 바*/}
-            <div className="footer">
-                <div className="bottom-menu">
-                    <img className="TimeTableImage" src={TimeTableImage} alt="Time Table"/>
+            <div className="menu">
+                <div className="menu-details">
+                    <img className="TimeTableImage" src={TimeTableImage} alt="Time Table" onClick={goToTimeLine}/>
                     <p>Time table</p>
                 </div>
-                <div className="bottom-menu">
+                <div className="menu-details">
                     <img className="CalendarImage" src={CalendarImage} alt="Calendar" onClick={goToCalendar}/>
                     <p>Calendar</p>
                 </div>
-                <div className="bottom-menu">
-                    <img className="TodoListImage" src={TodoListImage} alt="To Do List"/>
+                <div className="menu-details">
+                    <img className="TodoListImage" src={TodoListImage} alt="To Do List" onClick={goToToDoList}/>
                     <p>To Do list</p>
                 </div>
-                <div className="bottom-menu">
-                    <img className="SettingImage" src={SettingImage} alt="Setting"/>
+                <div className="menu-details">
+                    <img className="SettingImage" src={SettingImage} alt="Setting" onClick={goToSetting}/>
                     <p>Setting</p>
                 </div>
             </div>
-            {isPopupVisible && <div className="back-bg" onClick={togglePopupVisibility}></div>}
         </div>
     );
 };

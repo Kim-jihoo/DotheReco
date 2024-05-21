@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.setting-gray-box{
+    color: #303030;
+    line-height: 30px;
+    font-weight: normal;
+    width: 500px;
+    margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정 */
+}
+
+/* 상단 계정 */
+.account {
+    border-bottom: 1px solid #ccc;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    background-color: #DBE9CD;
+}
+
+.setting-name {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'NanumSquareRound',sans-serif;
+}
+
+.setting-email{
+    font-size: 18px;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+    color: #787977;
+}
+
+/* 설정 목록 */
+.setting-list {
+    padding: 20px 20px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.setting-item img {
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.setting-item p {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 5px;
+    font-family: 'NanumSquareRound',sans-serif;
+}
+
+/* 설정 목록 간 구분선 */
+.setting-separator {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+/*하단 메뉴바*/
+.menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    cursor: pointer;
+
+}
+
+.menu-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+
+.menu p {
+    font-size: 14px;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+}

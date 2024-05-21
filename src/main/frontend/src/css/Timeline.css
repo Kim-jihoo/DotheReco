@@ -1,0 +1,222 @@
+@import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.timeline-gray-box{
+    width: 500px;
+    margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정 */
+    color: #303030;
+    line-height: 30px;
+    font-weight: normal;
+}
+
+/*타임라인 헤더*/
+.timeline-header {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.timeline-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 50px;
+    font-family: 'NanumSquareRound',sans-serif;
+}
+
+/*우측 상단 이미지*/
+.timeline-top-right-images {
+    display: flex;
+    margin-right:20px;
+}
+
+.timeline-top-right-images img {
+    width: 31px;
+    height: 31px;
+    margin-left: 20px; /* 이미지 사이의 간격 조정 */
+}
+
+.timeline-top-right-images img:hover {
+    opacity: 0.7; /* 호버 시 투명도 조정 */
+    cursor: pointer; /* 호버 시 커서 모양 변경 */
+}
+
+.timeline-date-selector {
+    overflow-x: auto;
+    margin: 10px 0;
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    white-space: nowrap;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+}
+
+.date-scroll {
+    display: flex;
+    cursor: grab;
+}
+
+.timeline-date-item {
+    text-align: center;
+    flex: 1;
+    padding: 5px;
+    cursor: pointer;
+    display: inline-block;
+    width: 70px;
+}
+
+.timeline-date-item.selected {
+    background-color: #DBE9CD;
+    border-radius: 10px;
+}
+
+.timeline-reminder-box {
+    padding: 2px 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+
+.timeline-task-list {
+    margin: 10px 0;
+    max-height: 150px;
+    overflow-y: auto;
+    font-family: 'NanumSquareRound',sans-serif;
+}
+
+.timeline-task {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.timeline-task input {
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.timeline-task span {
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+/* 타임 테이블 */
+.timeline-timetable-container {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 540px;
+    overflow-y: scroll;
+    margin: 20px 0;
+    font-family: 'NanumSquareRound',sans-serif;
+    font-weight: bold;
+}
+
+.timeline-timetable {
+    width: 100%;
+}
+
+.timeline-hour {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ccc;
+    font-size: 13px;
+}
+
+.timeline-half-hour {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 40px;
+}
+
+.timeline-time-label {
+    width: 50px;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    font-family: 'NanumSquareRound',sans-serif;
+    white-space: nowrap;
+    margin-top: 10px;
+    padding-left: 10px;
+}
+
+.timeline-event {
+    position: absolute;
+    left: 85px;
+    width: calc(100% - 90px);
+    background-color: #87CEEB;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    border-radius: 8px;
+    opacity: 0.9;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+.event-category {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 12px;
+    color: #555;
+}
+
+.timeline-timetable-container::-webkit-scrollbar {
+    width: 5px; /* 스크롤바의 너비를 조정 */
+
+}
+
+.timeline-timetable-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 스크롤바의 트랙 배경색 */
+}
+
+.timeline-timetable-container::-webkit-scrollbar-thumb {
+    background: #888; /* 스크롤바의 색상 */
+    border-radius: 10px; /* 스크롤바의 모서리를 둥글게 만듦 */
+}
+
+.timeline-timetable-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 스크롤바 호버 시 색상 변경 */
+}
+
+
+/*하단 메뉴바*/
+.menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    cursor: pointer;
+    background-color: #fff; /* 하단 메뉴 바 배경색 */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* 하단 메뉴 바 그림자 */
+}
+
+.menu-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+
+.menu p {
+    font-size: 14px;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+}

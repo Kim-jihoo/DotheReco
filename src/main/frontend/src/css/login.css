@@ -11,6 +11,10 @@
     box-sizing: border-box;
     text-align: center;
     align-items: center;
+    font-size: 16px;
+    color: #303030;
+    line-height: 30px;
+    font-family: 'NanumSquareRound',sans-serif;
 }
 
 #back-button {
@@ -23,8 +27,8 @@
     font-size: 30px;
     color: #000;
     padding: 10px;
-    font-weight: 500;
     font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
 }
 
 .login-h1{
@@ -34,10 +38,11 @@
     text-align: center;
     margin-top: 30px;
     font-family: "Monomaniac One", sans-serif;
-    font-weight: 500;
+    font-weight: normal;
 }
 
-input {
+.login-account,
+.login-password{
     border: none; /* 기본 테두리를 제거합니다. */
     border-bottom: 2px solid #acada9; /* 밑줄을 추가합니다. */
     padding: 5px; /* 내부 여백을 설정합니다. */
@@ -70,15 +75,6 @@ input {
     border-bottom-color: #787977; /* 포커스 시 밑줄 색상을 변경합니다. */
 }
 
-div{
-    font-size: 16px;
-    font-weight: 900;
-    color: #303030;
-    line-height: 30px;
-    text-align: center;
-    font-family: 'NanumSquareRound',sans-serif;
-}
-
 .login-button {
     border-radius: 20px; /* 버튼을 라운드된 형태로 만듭니다. */
     padding: 2px 40px; /* 버튼 내부 여백을 조절합니다. */
@@ -89,7 +85,6 @@ div{
     cursor: pointer; /* 커서를 포인터 형태로 변경하여 클릭 가능한 상태로 나타냅니다. */
     margin-right: 20px;
     height: 37px;
-    font-weight: 500;
     font-family: 'NanumSquareRound',sans-serif;
 }
 

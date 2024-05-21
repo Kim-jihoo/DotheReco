@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import './css/addNormalCal.css'; // CSS 파일 import
@@ -13,137 +12,164 @@ const AddNormalSchedulePage = () => {
         fixedStartTime: '',
         fixedEndTime: '',
         fixedMemo: '',
-        categoryCode: '', // 백엔드와 일치하도록 수정
+        categoryCode: '',
         placeCode: '',
     });
     const [message, setMessage] = useState('');
-    const navigate=useNavigate();
+    const [isTimeToggleOn, setIsTimeToggleOn] = useState(false);
+    const navigate = useNavigate();
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setScheduleData({
-            ...scheduleData,
+        setScheduleData((prevData) => ({
+            ...prevData,
             [name]: value,
-        });
+        }));
     };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            // 백엔드가 예상하는 날짜 및 시간 형식을 확실히 맞추기
             const formattedData = {
                 ...scheduleData,
-                fixedStartDay: scheduleData.fixedStartDay, // YYYY-MM-DD 형식은 괜찮음
+                fixedStartDay: scheduleData.fixedStartDay,
                 fixedEndDay: scheduleData.fixedEndDay,
                 fixedStartTime: scheduleData.fixedStartTime ? scheduleData.fixedStartTime + ":00" : "00:00:00",
                 fixedEndTime: scheduleData.fixedEndTime ? scheduleData.fixedEndTime + ":00" : "00:00:00",
                 categoryCode: scheduleData.categoryCode ? parseInt(scheduleData.categoryCode, 10) : null,
                 placeCode: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
             };
-            await axios.post('/api/fixed', formattedData);
-            setMessage('일정 추가가 완료되었습니다.');
+
+            const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+            storedEvents.push(formattedData);
+            localStorage.setItem('events', JSON.stringify(storedEvents));
+
+            navigate('/Main', { state: { newEvent: formattedData } });
         } catch (error) {
-            console.log(error);
+            console.error('Error response:', error.response);
             setMessage('일정 추가에 실패했습니다. 서버 오류가 발생했습니다.');
         }
     };
 
-    useEffect(() => {
-        const config1 = {
-            dateFormat: "Y년 m월 d일",
-        };
-        flatpickr("input.startdate-picker", config1);
-        flatpickr("input.enddate-picker", config1);
-
-        const config2 = {
-            enableTime: true,
-            dateFormat: "Y년 m월 d일 H시 i분",
-        };
-        flatpickr("input.startdatetime-picker", config2);
-        flatpickr("input.enddatetime-picker", config2);
-
-        const timeToggle = document.getElementById('time-toggle');
-        const datePicker = document.getElementById('date-picker');
-        const hideInputContainer = document.getElementById('datetime-picker');
-
-        timeToggle.addEventListener('change', () => {
-            if (timeToggle.checked) {
-                datePicker.classList.add('hidden');
-                hideInputContainer.classList.remove('hidden');
-            } else {
-                datePicker.classList.remove('hidden');
-                hideInputContainer.classList.add('hidden');
-            }
-        });
-
-        // 페이지가 로드된 후 실행되는 코드
-        hideInputContainer.classList.add('hidden'); // datetime-picker 숨김
-    }, []); // 빈 배열을 전달하여 한 번만 실행되도록 설정
-
-    const goToMainCalendars = () => {
-        navigate('/MainCalendars');
+    const handleToggleChange = () => {
+        setIsTimeToggleOn(!isTimeToggleOn);
     };
 
+    useEffect(() => {
+        const startDateConfig = {
+            dateFormat: "Y-m-d",
+            onChange: (selectedDates, dateStr) => {
+                setScheduleData(prevData => ({
+                    ...prevData,
+                    fixedStartDay: dateStr,
+                }));
+            },
+        };
+        flatpickr("input.startdate-picker", startDateConfig);
+
+        const endDateConfig = {
+            dateFormat: "Y-m-d",
+            onChange: (selectedDates, dateStr) => {
+                setScheduleData(prevData => ({
+                    ...prevData,
+                    fixedEndDay: dateStr,
+                }));
+            },
+        };
+        flatpickr("input.enddate-picker", endDateConfig);
+
+        if (isTimeToggleOn) {
+            const startTimeConfig = {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                onChange: (selectedDates, dateStr) => {
+                    setScheduleData(prevData => ({
+                        ...prevData,
+                        fixedStartTime: dateStr,
+                    }));
+                },
+            };
+            flatpickr("input.starttime-picker", startTimeConfig);
+
+            const endTimeConfig = {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                onChange: (selectedDates, dateStr) => {
+                    setScheduleData(prevData => ({
+                        ...prevData,
+                        fixedEndTime: dateStr,
+                    }));
+                },
+            };
+            flatpickr("input.endtime-picker", endTimeConfig);
+        }
+    }, [isTimeToggleOn]);
+
     return (
-        <form className="addNor-gray-box" onSubmit={handleSubmit}>
+        <div className="addNor-gray-box">
             <button type="button" className="addNor-back-button" onClick={() => window.history.back()}>
                 &lt;
             </button>
+            <button type="submit" className="addNor-submit" form="addNor-form">완료</button>
             <h1 className="addNor-h1">일반스케줄 추가</h1>
-            <button type="submit" className="addNor-submit" onClick={goToMainCalendars}>완료</button>
-            <div className="addNor-container">
-                <div className="addNor-input-container">
-                    <div className="addNor-repeat-toggle">
-
-                        <span>반복 설정</span>
-                        <input className="addNor-repeat-toggle" role="switch" type="checkbox" id="repeat-toggle"/>
+            <form className="addNor-form" id="addNor-form" onSubmit={handleSubmit}>
+                <div className="addNor-container">
+                    <div className="addNor-input-container">
+                        <label htmlFor="fixedTitle">제목</label>
+                        <input type="text" className="fixedTitle" name="fixedTitle" id="fixedTitle" placeholder="제목"
+                               value={scheduleData.fixedTitle} onChange={handleInputChange} required/>
+                    </div>
+                    <div className="addNor-input-container">
+                        <label>날짜 및 시간</label>
+                        <div className="addNor-time-toggle">
+                            <span>시간 설정</span>
+                            <input className="addNor-time-toggle" role="switch" type="checkbox" id="addNor-time-toggle"
+                                   checked={isTimeToggleOn} onChange={handleToggleChange}/>
+                        </div>
+                        <div className={`addNor-date-picker ${isTimeToggleOn ? 'hidden' : ''}`} id="addNor-date-picker">
+                            <input className="startdate-picker" name="fixedStartDay" id="fixedStartDay" type="text"
+                                   placeholder="시작 날짜" value={scheduleData.fixedStartDay} onChange={handleInputChange}/>
+                            <span className="date-range-divider">~</span>
+                            <input className="enddate-picker" name="fixedEndDay" id="fixedEndDay" type="text"
+                                   placeholder="종료 날짜" value={scheduleData.fixedEndDay} onChange={handleInputChange}/>
+                        </div>
+                        <div className={`addNor-datetime-picker ${isTimeToggleOn ? '' : 'hidden'}`}
+                             id="addNor-datetime-picker">
+                            <input className="startdate-picker" name="fixedStartDay" id="fixedStartDay" type="text"
+                                   placeholder="시작 날짜" value={scheduleData.fixedStartDay} onChange={handleInputChange}/>
+                            <input className="starttime-picker" name="fixedStartTime" id="fixedStartTime" type="text"
+                                   placeholder="시작 시간" value={scheduleData.fixedStartTime} onChange={handleInputChange}/>
+                            <span className="date-range-divider">~</span>
+                            <input className="enddate-picker" name="fixedEndDay" id="fixedEndDay" type="text"
+                                   placeholder="종료 날짜" value={scheduleData.fixedEndDay} onChange={handleInputChange}/>
+                            <input className="endtime-picker" name="fixedEndTime" id="fixedEndTime" type="text"
+                                   placeholder="종료 시간" value={scheduleData.fixedEndTime} onChange={handleInputChange}/>
+                        </div>
+                    </div>
+                    <div className="addNor-input-container">
+                        <label>장소</label>
+                        <input type="number" className="placeCode" name="placeCode" id="placeCode" placeholder="장소"
+                               value={scheduleData.placeCode} onChange={handleInputChange}/>
+                    </div>
+                    <div className="addNor-input-container">
+                        <label>카테고리</label>
+                        <input type="number" className="categoryCode" name="categoryCode" id="categoryCode"
+                               placeholder="기타" value={scheduleData.categoryCode} onChange={handleInputChange}/>
+                    </div>
+                    <div className="addNor-input-container">
+                        <label>메모</label>
+                        <textarea className="fixedMemo" name="fixedMemo" id="memo" rows="4" placeholder="메모"
+                                  value={scheduleData.fixedMemo} onChange={handleInputChange}></textarea>
                     </div>
                 </div>
-
-                <div className="addNor-input-container">
-                    <input type="text" className="fixedTitle" id="title" placeholder="제목"
-                            required/>
-                </div>
-                <div className="addNor-input-container">
-                    <label>날짜 및 시간</label>
-                    <div className="addNor-time-toggle">
-                        <span>시간 설정</span>
-                        <input className="addNor-time-toggle" role="switch" type="checkbox" id="time-toggle"/>
-                    </div>
-                    <br/>
-                    <div className="addNor-date-picker" id="date-picker">
-                        <input className="startdate-picker" type="date" placeholder="시작 날짜"
-                               value={scheduleData.fixedStartDay} onChange={handleInputChange}/>
-                        <span className="date-range-divider">~</span>
-                        <input className="enddate-picker" type="date" placeholder="종료 날짜"
-                               value={scheduleData.fixedEndDay} onChange={handleInputChange}/>
-                    </div>
-                    <div className="addNor-datetime-picker" id="datetime-picker">
-                        <input className="startdatetime-picker" type="datetime-local" placeholder="시작 날짜 및 시간"
-                               value={scheduleData.fixedStartTime} onChange={handleInputChange}/>
-                        <span className="datetime-range-divider">~</span>
-                        <input className="enddatetime-picker" type="datetime-local" placeholder="종료 날짜 및 시간"
-                               value={scheduleData.fixedEndTime} onChange={handleInputChange}/>
-                    </div>
-                </div>
-                <div className="addNor-input-container">
-                    <label>장소                 </label>
-                    <input type="number" className="placeCode" id="placeCode" placeholder="장소"
-                           value={scheduleData.placeCode} onChange={handleInputChange}/>
-                </div>
-                <div className="addNor-input-container">
-                    <label>카테고리              </label>
-                    <input type="number" className="categoryCode" id="categoryCode" placeholder="기타"
-                           value={scheduleData.categoryCode} onChange={handleInputChange}/>
-                </div>
-                <div className="addNor-input-container">
-                    <label>메모</label>
-                </div>
-                <div className="addNor-input-container">
-                    <textarea className="fixedMemo" id="memo" rows="4" placeholder="메모" value={scheduleData.fixedMemo}
-                              onChange={handleInputChange}></textarea>
-                </div>
-            </div>
-        </form>
+            </form>
+            {message && <div className="message">{message}</div>}
+        </div>
     );
 };
-export default AddNormalSchedulePage;
 
+export default AddNormalSchedulePage;

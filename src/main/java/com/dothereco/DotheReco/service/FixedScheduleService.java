@@ -114,4 +114,13 @@ public class FixedScheduleService {
 
         fixedScheduleRepository.deleteById(id);
     }
+    @Transactional(readOnly = true)
+    public List<FixedScheduleDTO> getFixedSchedulesByDate(LocalDate date) {
+        List<Fixed> fixedSchedules = fixedScheduleRepository.findByFixedStartDayBetween(date, date);
+        return fixedSchedules.stream()
+                .map(fixedScheduleMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+
 }

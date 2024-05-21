@@ -4,11 +4,13 @@ import StartPage from './StartPage';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
 import AddNormalSchedulePage from "./AddNormalSchedulePage";
-import AddNormalSchedulePages from "./AddNormalSchedulePages";
+import AddFlexSchedulePage from "./AddFlexSchedulePage";
 import Main from "./Main"
-import MainCalendar from "./MainCalendar"
-import MainCalendars from "./MainCalendars"
-
+import TimeLinePage from "./TimeLinePage";
+import TimePicker from "./TimePicker";
+import ToDoListPage from "./ToDoListPage";
+import RecommendationPage from "./RecommendationPage";
+import SettingPage from "./SettingPage";
 
 function App() {
     return (
@@ -18,11 +20,13 @@ function App() {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/addNormalschedule" element={<AddNormalSchedulePage/>} />
-                <Route path="/addNormalschedules" element={<AddNormalSchedulePages/>} />
+                <Route path="/addFlexschedule" element={<AddFlexSchedulePage/>} />
                 <Route path="/Main" element={<Main/>}/>
-                <Route path="/MainCalendar" element={<MainCalendar/>}/>
-                <Route path="/MainCalendars" element={<MainCalendars/>}/>
-
+                <Route path="/TimeLine" element={<TimeLinePage/>} />
+                <Route path="/TimePicker" element={<TimePicker/>} />
+                <Route path="/ToDoList" element={<ToDoListPage />} />
+                <Route path="/Recommendation" element={<RecommendationPage/>} />
+                <Route path="/Setting" element={<SettingPage/>} />
             </Routes>
         </Router>
     );

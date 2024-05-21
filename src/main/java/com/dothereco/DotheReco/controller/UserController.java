@@ -1,6 +1,12 @@
 package com.dothereco.DotheReco.controller;
 
+import com.dothereco.DotheReco.service.UserLoginService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +24,8 @@ import com.dothereco.DotheReco.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private AuthenticationManager authenticationManager;
+    private UserLoginService userLoginService;
 
     //회원가입 페이지 띄워줌.
     @GetMapping("/signup")
@@ -25,6 +33,11 @@ public class UserController {
     public String signup(UserFormDTO userFormDto) {
         return "signup";
 
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
     //회원가입 처리 해주는 메서드

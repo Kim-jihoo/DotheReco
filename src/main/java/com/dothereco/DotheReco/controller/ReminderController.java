@@ -4,9 +4,13 @@ import com.dothereco.DotheReco.domain.Reminder;
 import com.dothereco.DotheReco.service.ReminderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reminders")
@@ -37,4 +41,13 @@ public class ReminderController {
         reminderService.deleteReminder(reminderId);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<Reminder>> getRemindersByDate(@PathVariable("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<Reminder> reminders = reminderService.getRemindersByDate(date);
+        if (reminders.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(reminders);
+    }
+
 }
