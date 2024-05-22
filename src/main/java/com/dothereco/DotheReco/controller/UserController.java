@@ -34,6 +34,17 @@ public class UserController {
         return "signup";
 
     }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody @Valid UserFormDTO userFormDto) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userFormDto.getUserid(), userFormDto.getUserpassword1()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return ResponseEntity.ok("로그인 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("로그인 실패");
+        }
+    }
 
     @GetMapping("/login")
     public String login() {

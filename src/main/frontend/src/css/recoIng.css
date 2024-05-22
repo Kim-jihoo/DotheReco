@@ -1,0 +1,257 @@
+@import url('https://webfontworld.github.io/NanumSquareRound/NanumSquareRound.css');
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Monomaniac+One&display=swap');
+
+.recoing-gray-box{
+    width: 500px;
+    margin: 0 auto; /* 가운데 정렬을 위해 margin을 auto로 설정 */
+    color: #303030;
+    line-height: 30px;
+    font-weight: normal;
+}
+
+.recoing-back-button {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: #000;
+    padding: 10px;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+}
+
+/* 제출 버튼 */
+.recoing-complete-submit {
+    position: absolute;
+    top: 27px;
+    right: 30px;
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    margin-right: 30px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 17px;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-weight: bold;
+}
+
+.recoing-submit {
+    position: absolute;
+    top: 27px;
+    right: 30px;
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    margin-right: 85px;
+    padding-top: 10px;
+    cursor: pointer;
+    font-size: 17px;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-weight: bold;
+}
+
+.recoing-edit-submit {
+    position: absolute;
+    top: 27px;
+    right: 30px;
+    background-color: #ffffff;
+    color: #000;
+    border: none;
+    padding: 10px;
+    margin-right: 130px;
+    cursor: pointer;
+    font-size: 17px;
+    font-family: 'NanumSquareRound', sans-serif;
+    font-weight: bold;
+}
+
+/* 타임 테이블 */
+.recoing-timetable-container {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 750px;
+    overflow-y: scroll;
+    font-family: 'NanumSquareRound',sans-serif;
+    font-weight: bold;
+    margin-top: 90px;
+}
+
+.recoing-timetable {
+    width: 100%;
+}
+
+.recoing-hour {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ccc;
+    font-size: 13px;
+}
+
+.recoing-half-hour {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 40px;
+}
+
+.recoing-time-label {
+    width: 50px;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    font-family: 'NanumSquareRound',sans-serif;
+    white-space: nowrap;
+    margin-top: 10px;
+    padding-left: 10px;
+}
+
+.recoing-event {
+    position: absolute;
+    left: 85px;
+    width: calc(100% - 90px);
+    background-color: #87CEEB;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    border-radius: 8px;
+    opacity: 0.9;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+.event-category {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 12px;
+    color: #555;
+}
+
+.recoing-timetable-container::-webkit-scrollbar {
+    width: 5px; /* 스크롤바의 너비를 조정 */
+
+}
+
+.recoing-timetable-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 스크롤바의 트랙 배경색 */
+}
+
+.recoing-timetable-container::-webkit-scrollbar-thumb {
+    background: #888; /* 스크롤바의 색상 */
+    border-radius: 10px; /* 스크롤바의 모서리를 둥글게 만듦 */
+}
+
+.recoing-timetable-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 스크롤바 호버 시 색상 변경 */
+}
+
+/* 사이드바 */
+.reco-sidebar-flex{
+    font-weight: bold;
+    font-family: 'NanumSquareRound',sans-serif;
+    font-size: 20px;
+}
+
+.sidebar {
+    position: fixed;
+    right: -250px;
+    top: 90px;
+    height: calc(100% - 170px);
+    width: 250px;
+    background-color: #f1f1f1;
+    transition: right 0.3s;
+    z-index: 1000;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.sidebar.open {
+    right: 0;
+}
+
+.sidebar-content {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar-toggle {
+    position: fixed;
+    right: 30px;
+    bottom: 100px;
+    cursor: pointer;
+    background-color: #80A160;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1001;
+}
+
+.schedule-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.schedule-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'NanumSquareRound',sans-serif;
+    display: flex;
+    align-items: center;
+}
+
+.schedule-item input[type="checkbox"]{
+    margin-left: auto;
+}
+
+/* 화면 오버레이 */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/*하단 메뉴바*/
+.menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    cursor: pointer;
+    background-color: #fff; /* 하단 메뉴 바 배경색 */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* 하단 메뉴 바 그림자 */
+}
+
+.menu-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+
+.menu p {
+    font-size: 14px;
+    font-family: "Monomaniac One", sans-serif;
+    font-weight: normal;
+}

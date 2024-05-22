@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -7,14 +7,16 @@ import './css/addFlexCal.css';
 import { FaStar } from 'react-icons/fa';
 
 const AddFlexSchedulePage = () => {
-    const { id } = useParams(); // Get the ID from the URL
+    const { id } = useParams();
+    const location = useLocation();
+    const [selectedPlace, setSelectedPlace] = useState('');
     const [scheduleData, setScheduleData] = useState({
         flexTitle: '',
         flexDuration: '',
         flexDeadline: '',
         flexMemo: '',
         categoryCode: '',
-        placeCode: '',
+        placeName: selectedPlace,
         importance: 3,
         repeatDays: []
     });
@@ -25,13 +27,31 @@ const AddFlexSchedulePage = () => {
 
     useEffect(() => {
         if (id) {
-            const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
-            const eventToEdit = storedEvents[id];
-            if (eventToEdit) {
-                setScheduleData(eventToEdit);
-            }
+            axios.get(`http://localhost:8080/api/unfixed-schedules/${id}`)
+                .then(response => {
+                    const eventToEdit = response.data;
+                    setScheduleData({
+                        flexTitle: eventToEdit.unfixedTitle,
+                        flexDuration: eventToEdit.unfixedTime,
+                        flexDeadline: eventToEdit.unfixedDeadline,
+                        flexMemo: eventToEdit.unfixedMemo,
+                        categoryCode: eventToEdit.category ? eventToEdit.category.categoryCode : '',
+                        placeCode: eventToEdit.place ? eventToEdit.place.placeCode : '',
+                        importance: eventToEdit.unfixedImportance,
+                        repeatDays: []
+                    });
+                })
+                .catch(error => console.error('Error fetching the event data:', error));
         }
-    }, [id]);
+
+        if (location.state && location.state.place) {
+            setSelectedPlace(location.state.place);
+            setScheduleData(prevData => ({
+                ...prevData,
+                placeName: location.state.place
+            }));
+        }
+    }, [id, location.state]);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -55,8 +75,8 @@ const AddFlexSchedulePage = () => {
     };
 
     const handleDurationChange = () => {
-        const hours = document.getElementById('duration-hours').value || '00';
-        const minutes = document.getElementById('duration-minutes').value || '00';
+        const hours = document.getElementById('duration-hours').value.padStart(2, '0');
+        const minutes = document.getElementById('duration-minutes').value.padStart(2, '0');
         setScheduleData((prevData) => ({
             ...prevData,
             flexDuration: `${hours}:${minutes}`
@@ -67,38 +87,44 @@ const AddFlexSchedulePage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            const hours = scheduleData.flexDuration.split(':')[0].padStart(2, '0');
+            const minutes = scheduleData.flexDuration.split(':')[1].padStart(2, '0');
+            const formattedDuration = `${hours}:${minutes}:00`;
+
             const formattedData = {
-                ...scheduleData,
-                flexDeadline: scheduleData.flexDeadline + ":00",
-                categoryCode: scheduleData.categoryCode ? parseInt(scheduleData.categoryCode, 10) : null,
-                placeCode: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
+
+                unfixedTitle: scheduleData.flexTitle,
+                scheduleDate: scheduleData.flexDeadline.split('T')[0],
+                unfixedTime: formattedDuration, // 올바른 LocalTime 형식
+                unfixedDeadline: scheduleData.flexDeadline.split('T')[0],
+                unfixedMemo: scheduleData.flexMemo,
+                categoryId: scheduleData.categoryCode ? parseInt(scheduleData.categoryCode, 10) : null,
+                placeId: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
+                unfixedImportance: scheduleData.importance,
+                reminderMark: false
+
             };
 
-            const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+            let response;
             if (id) {
-                storedEvents[id] = formattedData;
+                response = await axios.put(`http://localhost:8080/api/unfixed-schedules/${id}`, formattedData);
             } else {
-                storedEvents.push(formattedData);
+                response = await axios.post('http://localhost:8080/api/unfixed-schedules', formattedData);
             }
-            localStorage.setItem('events', JSON.stringify(storedEvents));
 
-            console.log('Navigating with new event:', formattedData);
-            navigate('/Main', { state: { newEvent: formattedData } });
+            console.log('Navigating with new event:', response.data);
+            navigate('/Main', { state: { newEvent: response.data } });
         } catch (error) {
             console.error('Error response:', error.response);
             setMessage('일정 추가에 실패했습니다. 서버 오류가 발생했습니다.');
         }
     };
 
-    useEffect(() => {
-        const colors = {};
-        setCategoryColor(colors);
-    }, []);
 
     useEffect(() => {
         const datetimeConfig = {
             enableTime: true,
-            dateFormat: "Y-m-d H:i",
+            dateFormat: "Y-m-d\\TH:i",
             onChange: (selectedDates, dateStr) => {
                 setScheduleData(prevData => ({
                     ...prevData,
@@ -111,6 +137,10 @@ const AddFlexSchedulePage = () => {
 
     const setPriority = (level) => {
         setScheduleData((prevData) => ({ ...prevData, importance: level }));
+    };
+
+    const handleSearchClick = () => {
+        navigate('/Map');
     };
 
     return (
@@ -153,25 +183,9 @@ const AddFlexSchedulePage = () => {
                         </div>
                     </div>
                     <div className="addFlex-input-container">
-                        <label>중요도</label>
-                        <div className="priority-selector">
-                            {[1, 2, 3, 4, 5].map(level => (
-                                <FaStar key={level}
-                                        className={`star-icon ${scheduleData.importance >= level ? 'selected' : ''}`}
-                                        onClick={() => setPriority(level)}
-                                        style={{
-                                            color: scheduleData.importance >= level ? '#80A160' : '#ccc',
-                                            cursor: 'pointer',
-                                            marginRight: '5px' // Adjusting the margin between stars
-                                        }}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                    <div className="addFlex-input-container">
-                        <label htmlFor="placeCode">장소 (선택)</label>
-                        <input type="number" className="placeCode" name="placeCode" id="placeCode" placeholder="장소"
-                               value={scheduleData.placeCode} onChange={handleInputChange}/>
+                        <label htmlFor="placeName">장소</label>
+                        <input type="text" name="placeName" value={scheduleData.placeName} onChange={handleInputChange} />
+                        <button type="button" onClick={handleSearchClick}>검색</button>
                     </div>
                     <div className="addFlex-input-container">
                         <label htmlFor="categoryCode">카테고리</label>

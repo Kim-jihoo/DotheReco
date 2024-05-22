@@ -67,7 +67,10 @@ public class UnfixedService {
         unfixed.setUnfixedDeadline(dto.getUnfixedDeadline());
         unfixed.setUnfixedImportance(Optional.ofNullable(dto.getUnfixedImportance()).orElse(3));
         unfixed.setUnfixedMemo(dto.getUnfixedMemo());
-        unfixed.setReminderMark(dto.getReminderMark());
+        //unfixed.setReminderMark(dto.getReminderMark());
+        unfixed.setUnfixedCompleted(false);
+        unfixed.setUnfixedRecommended(false);
+        unfixed.setReminderMark(false);
 
         // 카테고리 설정
         if (dto.getCategoryId() != null) {

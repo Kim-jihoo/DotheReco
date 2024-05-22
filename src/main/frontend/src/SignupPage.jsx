@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import './css/signup.css'
+import React, { useState } from 'react';
+import './css/signup.css';
 import axios from 'axios';
+
 function SignupPage() {
     const [formData, setFormData] = useState({
         account: '',
@@ -33,7 +34,6 @@ function SignupPage() {
         }
 
         try {
-           // const response = await axios.post('http://localhost:8080/user/signup/json', {
             const response = await axios.post('/api/user/signup/json', {
                 userid: formData.account,
                 usernickname: formData.nickname,
@@ -43,10 +43,7 @@ function SignupPage() {
             alert(response.data); // 회원가입 성공 메시지 출력
             // 회원가입 성공 후 필요한 작업 수행 (StartPage 페이지 이동)
         } catch (error) {
-           /* if (error.response) {
-                setErrorMessage(error.response.data); // 백엔드에서 전달된 에러 메시지 출력*/
             if (error.response && error.response.data) {
-                // 에러 메시지가 객체 형태로 오는 경우, 적절한 메시지로 변환
                 const errorMsg = error.response.data.error || '회원가입에 실패했습니다.';
                 setErrorMessage(errorMsg);
             } else {
@@ -69,6 +66,7 @@ function SignupPage() {
                         className="signup-account"
                         type="text"
                         id="id-account"
+                        name="account"
                         placeholder="이메일"
                         value={formData.account}
                         onChange={handleInputChange}
@@ -81,6 +79,7 @@ function SignupPage() {
                         className="signup-password"
                         type="password"
                         id="password-account"
+                        name="password"
                         placeholder="비밀번호"
                         value={formData.password}
                         onChange={handleInputChange}
@@ -93,6 +92,7 @@ function SignupPage() {
                         className="signup-password2"
                         type="password"
                         id="password2-account"
+                        name="password2"
                         placeholder="비밀번호 확인"
                         value={formData.password2}
                         onChange={handleInputChange}
@@ -105,6 +105,7 @@ function SignupPage() {
                         type="text"
                         className="signup-nickname"
                         id="nickname-account"
+                        name="nickname"
                         placeholder="닉네임"
                         value={formData.nickname}
                         onChange={handleInputChange}
@@ -116,6 +117,7 @@ function SignupPage() {
                         className="signup-agreecheck"
                         type="checkbox"
                         id="id-agree"
+                        name="agree"
                         checked={formData.agree}
                         onChange={() => setFormData({ ...formData, agree: !formData.agree })}
                         required

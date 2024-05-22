@@ -15,7 +15,7 @@ public class UnfixedScheduleDTO {
     private LocalDate unfixedDeadline;
     private Integer unfixedImportance =3;
     private String unfixedMemo;
-    private Boolean reminderMark;
+   // private Boolean reminderMark;
     private Long categoryId;
     private Long placeId;
 

@@ -26,12 +26,13 @@ public class TimeRecommendationController {
     }
     @GetMapping("/recommend")
     public ResponseEntity<List<TimeRange>> recommendTimeSlots(
-            @RequestParam("userId") Long userId,
+            //@RequestParam("userId") Long userId,
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam("expectedDuration") Duration expectedDuration) {
 
         // 사용자의 바쁜 시간대 조회
-        List<TimeRange> busySlots = fixedScheduleService.getBusyTimeSlots(userId, date);
+        //List<TimeRange> busySlots = fixedScheduleService.getBusyTimeSlots(userId, date);
+        List<TimeRange> busySlots = fixedScheduleService.getBusyTimeSlots(date);
         // 추천 가능한 시간대 계산
         List<TimeRange> recommendedSlots = scheduleRecService.recommendTimeSlots(busySlots, expectedDuration);
         return ResponseEntity.ok(recommendedSlots);

@@ -43,7 +43,8 @@ public class FixedScheduleService {
         return scheduleRecService.recommendTimeSlots(busySlots, expectedDuration);
     }
     @Transactional(readOnly = true)
-    public List<TimeRange> getBusyTimeSlots(Long userId, LocalDate date) {
+    //public List<TimeRange> getBusyTimeSlots(Long userId, LocalDate date) {
+    public List<TimeRange> getBusyTimeSlots(LocalDate date) {
         LocalDate startDate = date;
         LocalDate endDate = date.plusDays(1); // 같은 날짜를 의미합니다.
        // List<Fixed> userSchedules = fixedScheduleRepository.findByUser_IdAndFixedStartDayBetween(userId, startDate, endDate);

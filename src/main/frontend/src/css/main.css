@@ -44,7 +44,7 @@
 
 /*search를 눌렀을 때 나오는 popup - 시간대 추천 mini calendar*/
 .search-popup-wrap,
-.searchList-popup-wrap{
+.searchList-popup-wrap {
     display: none;
     width: 400px; /* 팝업창 너비 자동 조정 */
     height: 600px; /* 팝업창 높이 자동 조정 */
@@ -57,6 +57,47 @@
     border: 1px solid #333;
     border-radius: 15px;
     padding: 10px; /* 팝업 내부 여백 */
+}
+
+.recommended-times-list-container {
+    max-height: calc(100vh - 440px); /* 부모 요소의 높이를 기준으로 스크롤 생성 */
+    overflow-y: auto; /* 스크롤 적용 */
+    margin-top:10px;
+}
+
+.recommended-time {
+    border: 1px solid #ccc; /* border 추가 */
+    margin-bottom: 10px; /* 아래 여백 추가 */
+    margin-top: 14px;
+    width: 300px;
+    left: 40px;
+    cursor: pointer; /* 선택 가능하도록 커서 설정 */
+    font-family: 'NanumSquareRound', sans-serif;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 하단 메뉴 바 그림자 */
+    padding: 7px;
+}
+
+.recommended-time:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+}
+
+.recommended-times-list-container::-webkit-scrollbar {
+    width: 5px; /* 스크롤바의 너비를 조정 */
+}
+
+.recommended-times-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 스크롤바의 트랙 배경색 */
+}
+
+.recommended-times-list-container::-webkit-scrollbar-thumb {
+    background: #888; /* 스크롤바의 색상 */
+    border-radius: 10px; /* 스크롤바의 모서리를 둥글게 만듦 */
+}
+
+.recommended-times-list-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 스크롤바 호버 시 색상 변경 */
 }
 
 .estimatedTime-inputField label{
@@ -443,7 +484,6 @@
     cursor: pointer;
     font-size: 14px;
 }
-
 
 /*하단 메뉴바*/
 

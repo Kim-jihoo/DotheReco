@@ -7,6 +7,7 @@ import TodoListImage from "./images/할 일 list.png";
 import SettingImage from "./images/Setting.png";
 import mapImage from "./images/map.png";
 import recommendationImage from "./images/recommendation.png";
+import axios from 'axios';
 
 // 카테고리별 색상 정의
 const categoryColors = {
@@ -47,15 +48,17 @@ const Timeline = () => {
         for (let i = -4; i <= 4; i++) {
             const newDate = new Date(today);
             newDate.setDate(today.getDate() + i);
+            const isoDate = new Date(newDate.setHours(0, 0, 0, 0)).toISOString().split('T')[0]; // ISO 형식으로 변환
             dateList.push({
-                day: days[newDate.getDay()],
-                date: newDate.getDate()
-            });
+                day: days[newDate.getUTCDay()],
+                date: newDate.getUTCDate(),
+                fullDate: isoDate // YYYY-MM-DD 형식으로 변환
+            }); //for부터 여기까지 수정함
         }
         setDates(dateList);
         setSelectedDate(4); // Today is in the middle of the list
     }, []);
-
+/*
     useEffect(() => {
         const loadEvents = () => {
             const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
@@ -76,7 +79,29 @@ const Timeline = () => {
             setTimeTable(timeTableEvents);
         };
         loadEvents();
-    }, [selectedDate]);
+    }, [selectedDate]);*/
+    useEffect(() => {
+        const loadEvents = async () => {
+            if (dates.length > 0) {
+                const selectedFullDate = dates[selectedDate].fullDate;
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/fixed/date/${selectedFullDate}`);
+                    const eventsForSelectedDate = response.data.map(event => ({
+                        startTime: event.fixedStartTime,
+                        endTime: event.fixedEndTime,
+                        event: event.fixedTitle,
+                        category: event.categoryCode // Ensure categoryCode is included
+                    }));
+                    setTimeTable(eventsForSelectedDate);
+                } catch (error) {
+                    console.error("일정을 가져오는 중 오류 발생:", error);
+                    setTimeTable([]); // 오류가 발생하면 빈 배열로 설정
+                }
+            }
+        };
+
+        loadEvents();
+    }, [selectedDate, dates]);
 
     const goToTimeLine = () => {
         navigate('/timeLine');

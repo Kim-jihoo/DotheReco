@@ -7,6 +7,7 @@ import SettingImage from './images/Setting.png';
 import TimeTableImage from './images/Time table.png';
 import CalendarImage from './images/Calendar.png';
 import TodoListImage from './images/할 일 list.png';
+import axios from 'axios';
 
 const Main = () => {
     const [date, setDate] = useState(new Date());
@@ -21,6 +22,11 @@ const Main = () => {
     const [showEstimatedPicker, setShowEstimatedPicker] = useState(false);
     const [selectedEstimated, setSelectedEstimated] = useState('');
 
+  //  const [recommendedSlots, setRecommendedSlots] = useState([]); /////
+=======
+    const [recommendedTimes, setRecommendedTimes] = useState([]); // 추천된 시간대를 저장하는 상태
+
+
     const getCategoryColor = (categoryCode) => {
         // 카테고리 코드에 따라 다른 색상을 반환
         switch (categoryCode) {
@@ -34,7 +40,20 @@ const Main = () => {
                 return '#DBE9CD'; // 기본 색상
         }
     };
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/fixed');
+                setEvents(response.data);
+            } catch (error) {
+                console.error('일정을 가져오는 중 오류 발생:', error);
+            }
+        };
 
+        fetchEvents();
+    }, []);
+
+    /*
 // 외부 페이지에서 전달받은 데이터 처리
     useEffect(() => {
         // 기존 이벤트 목록을 가져옵니다.
@@ -58,9 +77,16 @@ const Main = () => {
             }
         }
     }, [location.state]);
-
-    //localStorage.clear();
-
+*/
+    useEffect(() => {
+        // 외부 페이지에서 전달받은 데이터 처리
+        if (location.state && location.state.newEvent) {
+            const newEvent = location.state.newEvent;
+            setEvents(prevEvents => [...prevEvents, newEvent]);
+            // 상태 초기화
+            navigate(location.pathname, { replace: true });
+        }
+    }, [location.state?.newEvent]);
     const renderCalendar = () => {
         // 현재 날짜와 이벤트 목록을 가져옵니다.
         const viewYear = date.getFullYear();
@@ -230,10 +256,85 @@ const Main = () => {
         document.querySelector('.back-bg').style.display = 'none';
     };
 
+/*
     const onRecommendClick = () => {
         document.querySelector('.search-popup-wrap').style.display = 'none';
         document.querySelector('.searchList-popup-wrap').style.display = 'block';
         document.querySelector('.back-bg').style.display = 'block';
+    };
+    const onRecommendClick = async () => {
+        try {
+            const dateFormatted = mini_date.toISOString().split('T')[0];
+            const durationParts = selectedEstimated.split(':');
+            const hours = parseInt(durationParts[0]);
+            const minutes = parseInt(durationParts[1]);
+            const expectedDuration = `PT${hours}H${minutes}M`;
+
+            const response = await axios.get('http://localhost:8080/api/time/recommend', {
+                params: {
+                    date: dateFormatted,
+                    expectedDuration: expectedDuration,
+                },
+            });
+
+            console.log('추천된 시간대:', response.data);
+            setRecommendedSlots(response.data);
+
+            document.querySelector('.search-popup-wrap').style.display = 'none';
+            document.querySelector('.searchList-popup-wrap').style.display = 'block';
+            document.querySelector('.back-bg').style.display = 'block';
+        } catch (error) {
+            console.error('시간대 추천 오류:', error);
+        }*/
+
+
+    const onRecommendClick = async () => {
+        document.querySelector('.search-popup-wrap').style.display = 'none';
+        document.querySelector('.searchList-popup-wrap').style.display = 'block';
+        document.querySelector('.back-bg').style.display = 'block';
+
+        // 임의의 추천 시간 데이터 생성
+        const mockRecommendedTimes = [
+            {
+                date: '2024년 5월 22일',
+                starttime: '15:00' ,
+                endtime: '18:00'
+            },
+            {
+                date: '2024년 5월 23일',
+                starttime: '09:00',
+                endtime: '18:00'
+            },
+            {
+                date: '2024년 5월 24일',
+                starttime: '14:00',
+                endtime: '18:00'
+            },
+            {
+                date: '2024년 5월 24일',
+                starttime: '14:00',
+                endtime: '18:00'
+            }
+        ];
+        setRecommendedTimes(mockRecommendedTimes);
+
+        /*
+        try {
+            //임의의 데이터 생성
+            const selectedDates = selectedMiniDates.map(day => new Date(mini_date.getFullYear(), mini_date.getMonth(), day).toISOString());
+
+            // 백엔드 호출
+            const response = await axios.post('/api/recommend-times', {
+                dates: selectedDates,
+                estimatedTime: selectedEstimated,
+            });
+
+            setRecommendedTimes(response.data.recommendedTimes);
+        } catch (error) {
+            console.error('Error fetching recommended times:', error);
+        }
+        */
+
     };
 
     const goToaddNormalSchedule = () => {
@@ -364,10 +465,25 @@ const Main = () => {
 
             {/*시간대 추천 리스트 팝업 창*/}
             <div className="searchList-popup-wrap">
-                <h2 className="search-h2">시간대 추천</h2>
                 <button className="search-back-button" id="back-button" onClick={goBack}>
                     &lt;
                 </button>
+                <h2 className="search-h2">시간대 추천</h2>
+                <div className="recommended-times-list-wrap">
+                    <div className="recommended-times-list-container">
+                        <div className="recommended-times-list">
+                            {recommendedTimes.map((time, index) => (
+                                <div key={index} className="recommended-time">
+                                    <div className="time-box">
+                                        날짜: {time.date}<br/>
+                                        시간: {time.starttime} - {time.endtime}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             {/*addSchedule 눌렀을 때 뜨는 팝업 창*/}

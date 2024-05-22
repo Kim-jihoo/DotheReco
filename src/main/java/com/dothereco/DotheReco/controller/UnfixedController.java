@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/unfixed-schedules")
@@ -22,14 +23,19 @@ public class UnfixedController {
         this.unfixedService = unfixedService;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
-    public ResponseEntity<List<Unfixed>> getAllUnfixedSorted() {
+    public ResponseEntity<List<UnfixedScheduleDTO>> getAllUnfixedSorted() {
         List<Unfixed> sortedUnfixed = unfixedService.getAllUnfixed();
-        return ResponseEntity.ok(sortedUnfixed);
+        List<UnfixedScheduleDTO> dtoList = sortedUnfixed.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtoList);
     }
 
 
     // 특정 유동 스케줄 조회
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{id}")
     public ResponseEntity<Unfixed> getUnfixedScheduleById(@PathVariable("id") Long id) {
         Optional<Unfixed> unfixed = unfixedService.getUnfixedById(id);
@@ -37,6 +43,7 @@ public class UnfixedController {
     }
 
     // 유동 스케줄 생성
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping
     public ResponseEntity<Unfixed> createUnfixedSchedule(@RequestBody UnfixedScheduleDTO unfixedDto) {
         Unfixed unfixed = unfixedService.createUnfixed(unfixedDto);
@@ -55,5 +62,18 @@ public class UnfixedController {
     public ResponseEntity<Void> deleteUnfixedSchedule(@PathVariable("id") Long id) {
         unfixedService.deleteUnfixed(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private UnfixedScheduleDTO convertToDto(Unfixed unfixed) {
+        UnfixedScheduleDTO dto = new UnfixedScheduleDTO();
+        dto.setUnfixedTitle(unfixed.getUnfixedTitle());
+        dto.setScheduleDate(unfixed.getScheduleDate());
+        dto.setUnfixedTime(unfixed.getUnfixedTime());
+        dto.setUnfixedDeadline(unfixed.getUnfixedDeadline());
+        dto.setUnfixedImportance(unfixed.getUnfixedImportance());
+        dto.setUnfixedMemo(unfixed.getUnfixedMemo());
+        dto.setCategoryId(unfixed.getCategory() != null ? unfixed.getCategory().getCategoryCode() : null);
+        dto.setPlaceId(unfixed.getPlace() != null ? unfixed.getPlace().getPlaceCode() : null);
+        return dto;
     }
 }

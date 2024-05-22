@@ -7,6 +7,7 @@ import CalendarImage from "./images/Calendar.png";
 import TodoListImage from "./images/할 일 list.png";
 import SettingImage from "./images/Setting.png";
 import AddImage from "./images/plus.png";
+import axios from 'axios';
 
 const ToDoListPage = () => {
     const [schedules, setSchedules] = useState([]);
@@ -18,7 +19,7 @@ const ToDoListPage = () => {
         2: '예약',
         3: '수업'
     };
-
+/*
     useEffect(() => {
         const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
         const flexibleSchedules = storedEvents.filter(event => event.flexTitle); // Filter flexible schedules
@@ -34,7 +35,28 @@ const ToDoListPage = () => {
         const updatedSchedules = schedules.filter((_, i) => i !== index);
         setSchedules(updatedSchedules);
         localStorage.setItem('events', JSON.stringify(updatedSchedules));
+    };*/
+    useEffect(() => {
+        const fetchSchedules = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/unfixed-schedules');
+                setSchedules(response.data);
+            } catch (error) {
+                console.error('Error fetching schedules:', error);
+            }
+        };
+
+        fetchSchedules();
+    }, []);
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:8080/api/unfixed-schedules/${id}`);
+            setSchedules(schedules.filter(schedule => schedule.unfixedCode !== id));
+        } catch (error) {
+            console.error('Error deleting schedule:', error);
+        }
     };
+
 
     const handleEdit = (index) => {
         navigate(`/edit/${index}`);
@@ -90,19 +112,19 @@ const ToDoListPage = () => {
                     {schedules.map((schedule, index) => (
                         <div key={index} className="todo-item">
                             <div className="todo-header">
-                                <h3>{schedule.flexTitle}</h3>
+                                <h3>{schedule.unfixedTitle}</h3>
                                 <div className="todo-actions">
-                                    <FaEdit onClick={() => handleEdit(index)} />
-                                    <FaTrash onClick={() => handleDelete(index)} />
+                                    <FaEdit onClick={() => handleEdit(schedule.unfixedCode)} />
+                                    <FaTrash onClick={() => handleDelete(schedule.unfixedCode)} />
                                 </div>
                             </div>
                             <div className="todo-details">
-                                <p>예상 소요시간: {schedule.flexDuration}</p>
-                                <p>마감기한: {schedule.flexDeadline}</p>
-                                <p>중요도: {renderStars(schedule.importance)}</p>
-                                <p>카테고리: {categoryMap[schedule.categoryCode] || '졸프'}</p>
-                                <p>장소: {schedule.placeCode}</p>
-                                <p>메모: {schedule.flexMemo}</p>
+                                <p>예상 소요시간: {schedule.unfixedTime}</p>
+                                <p>마감기한: {schedule.unfixedDeadline}</p>
+                                <p>중요도: {renderStars(schedule.unfixedImportance)}</p>
+                                <p>카테고리: {schedule.categoryId !== null ? categoryMap[schedule.categoryId] : '졸프'}</p>
+                                <p>장소: {schedule.placeId}</p>
+                                <p>메모: {schedule.unfixedMemo}</p>
                             </div>
                         </div>
                     ))}
