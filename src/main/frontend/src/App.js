@@ -4,7 +4,6 @@ import StartPage from './StartPage';
 import SignupPage from './SignupPage';
 import LoginPage from './LoginPage';
 import AddNormalSchedulePage from "./AddNormalSchedulePage";
-
 import AddFlexSchedulePage from "./AddFlexSchedulePage";
 import Main from "./Main"
 import TimeLinePage from "./TimeLinePage";
@@ -14,7 +13,11 @@ import RecommendationPage from "./RecommendationPage";
 import RecoIng from "./RecoIng";
 import SettingPage from "./SettingPage";
 import TmapComponent from "./TmapComponent";
+import WalkingMapPage from "./WalkingMapPage";
 
+import RecoIngMake from "./RecoIngMake";
+import TimeLineMake from "./TimeLineMake";
+import MainMake from "./MainMake";
 
 function App() {
     return (
@@ -33,6 +36,11 @@ function App() {
                 <Route path="/Recommendation" element={<RecommendationPage/>} />
                 <Route path="/RecoIng" element={<RecoIng/>} />
                 <Route path="/Setting" element={<SettingPage/>} />
+                <Route path="/walkingMap" element={<WalkingMapPage/>} />
+
+                <Route path="/RecoIngMake" element={<RecoIngMake/>} />
+                <Route path="/TimeLineMake" element={<TimeLineMake/>} />
+                <Route path="/MainMake" element={<MainMake/>} />
             </Routes>
         </Router>
     );

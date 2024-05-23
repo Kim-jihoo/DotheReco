@@ -3,8 +3,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +19,13 @@ public class TimeBlock {
     private Long tbCode;
 
     @Column(name = "Tb_date")
-    private Date tbDate;
+    private LocalDate tbDate;
 
     @Column(name = "Tb_startTime")
-    private Time tbStartTime;
+    private LocalTime tbStartTime;
 
     @Column(name = "Tb_endTime")
-    private Time tbEndTime;
+    private LocalTime tbEndTime;
 
     @OneToMany (mappedBy = "timeBlockList4")
     private List<Connection4> connection4 = new ArrayList<>();

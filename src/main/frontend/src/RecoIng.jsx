@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './css/recoIng.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import TimeTableImage from "./images/Time table.png";
 import CalendarImage from "./images/Calendar.png";
 import TodoListImage from "./images/할 일 list.png";
 import SettingImage from "./images/Setting.png";
+import axios from 'axios';
 
 // 카테고리별 색상 정의
 const categoryColors = {
@@ -23,12 +24,13 @@ const categoryNames = {
 
 const RecoIng = ({ recommendedSchedules }) => {
     const navigate = useNavigate();
-    const [dates, setDates] = useState([]);
+    const location = useLocation(); // useLocation 훅 사용하여 location 변수 정의
+    //const [dates, setDates] = useState([]);
     const [timeTable, setTimeTable] = useState([]);
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [schedules, setSchedules] = useState([]);
     const [selectedSchedules, setSelectedSchedules] = useState([]);
-
+/*
     useEffect(() => {
         const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
         const flexibleSchedules = storedEvents.filter(event => event.flexTitle);
@@ -59,6 +61,30 @@ const RecoIng = ({ recommendedSchedules }) => {
         };
         loadEvents();
     }, []);
+*/
+    useEffect(() => {
+        if (!location.state?.todayEvents) {
+            const fetchTodaySchedules = async () => {
+                const today = new Date().toISOString().split('T')[0];
+                console.log("Fetching schedules for date:", today); // 요청 날짜를 로그로 확인
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/fixed/date/${today}`);
+                    console.log("Response data:", response.data); // 응답 데이터를 로그로 확인
+                    const eventsForToday = response.data.map(event => ({
+                        startTime: event.fixedStartTime,
+                        endTime: event.fixedEndTime,
+                        event: event.fixedTitle,
+                        category: event.categoryCode
+                    }));
+                    setTimeTable(eventsForToday);
+                } catch (error) {
+                    console.error('일정을 가져오는 중 오류 발생:', error);
+                }
+            };
+
+            fetchTodaySchedules();
+        }
+    }, [location.state]);
 
     const goToTimeLine = () => {
         navigate('/timeLine');

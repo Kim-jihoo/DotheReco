@@ -24,7 +24,7 @@ const categoryNames = {
     3: '수업'
 };
 
-const Timeline = () => {
+const TimelineMake = () => {
     const navigate = useNavigate();
     const [selectedDate, setSelectedDate] = useState(0);
     const [dates, setDates] = useState([]);
@@ -58,28 +58,29 @@ const Timeline = () => {
         setDates(dateList);
         setSelectedDate(4); // Today is in the middle of the list
     }, []);
-/*
-    useEffect(() => {
-        const loadEvents = () => {
-            const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
-            const today = new Date();
-            today.setDate(today.getDate() + (selectedDate - 4)); // Adjust date based on selectedDate
+    /*
+        useEffect(() => {
+            const loadEvents = () => {
+                const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+                const today = new Date();
+                today.setDate(today.getDate() + (selectedDate - 4)); // Adjust date based on selectedDate
 
-            const eventsForSelectedDate = storedEvents.filter(event => {
-                const eventDate = new Date(event.fixedStartDay);
-                return eventDate.toDateString() === today.toDateString();
-            });
+                const eventsForSelectedDate = storedEvents.filter(event => {
+                    const eventDate = new Date(event.fixedStartDay);
+                    return eventDate.toDateString() === today.toDateString();
+                });
 
-            const timeTableEvents = eventsForSelectedDate.map(event => ({
-                startTime: event.fixedStartTime,
-                endTime: event.fixedEndTime,
-                event: event.fixedTitle,
-                category: event.categoryCode // Ensure categoryCode is included
-            }));
-            setTimeTable(timeTableEvents);
-        };
-        loadEvents();
-    }, [selectedDate]);*/
+                const timeTableEvents = eventsForSelectedDate.map(event => ({
+                    startTime: event.fixedStartTime,
+                    endTime: event.fixedEndTime,
+                    event: event.fixedTitle,
+                    category: event.categoryCode // Ensure categoryCode is included
+                }));
+                setTimeTable(timeTableEvents);
+            };
+            loadEvents();
+        }, [selectedDate]);*/
+    /*
     useEffect(() => {
         const loadEvents = async () => {
             if (dates.length > 0) {
@@ -101,38 +102,82 @@ const Timeline = () => {
         };
 
         loadEvents();
+    }, [selectedDate, dates]);*/
+
+    useEffect(() => {
+        const predefinedEvents = [
+            {
+                startTime: '09:30',
+                endTime: '12:30',
+                event: '인공지능 과제',
+                category: 1
+            },
+            {
+                startTime: '15:00',
+                endTime: '16:00',
+                event: '올리브영',
+                category: 3
+            },
+            {
+                startTime: '19:00',
+                endTime: '20:00',
+                event: '헬스장',
+                category: 2
+            },
+            {
+                startTime: '20:30',
+                endTime: '21:30',
+                event: '과외 준비',
+                category: 2
+            }
+        ];
+
+        const loadEvents = async () => {
+            if (dates.length > 0) {
+                const selectedFullDate = dates[selectedDate].fullDate;
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/fixed/date/${selectedFullDate}`);
+                    const fetchedEvents = response.data.map(event => ({
+                        startTime: event.fixedStartTime,
+                        endTime: event.fixedEndTime,
+                        event: event.fixedTitle,
+                        category: event.categoryCode // Ensure categoryCode is included
+                    }));
+                    const combinedEvents = [...fetchedEvents, ...predefinedEvents];
+                    setTimeTable(combinedEvents);
+                } catch (error) {
+                    console.error("일정을 가져오는 중 오류 발생:", error);
+                    setTimeTable(predefinedEvents); // 오류가 발생하면 미리 정의된 이벤트만 설정
+                }
+            }
+        };
+
+        loadEvents();
     }, [selectedDate, dates]);
 
     const goToTimeLine = () => {
         navigate('/timeLine');
     };
 
-    const goToCalendar = () => {
-        navigate('/Main');
+    const goToCalendarMake = () => {
+        navigate('/MainMake');
     };
 
     const goToToDoList = () => {
         navigate('/ToDolist');
     };
 
-    const goToReco = () => {
-        const todayEvents = timeTable.filter(item => {
-            const [hour] = item.startTime.split(':');
-            return parseInt(hour) >= 7 || parseInt(hour) === 0;
-        });
-        navigate('/Recommendation', { state: { todayEvents } });
+    const goToReco=()=>{
+        navigate('/Recommendation');
     }
-
 
     const goToSetting=()=>{
         navigate('/Setting');
     }
 
-
-    const goToWalkingMap=()=>{ // 충돌나서 얘 살렸음
+    const goToWalkingMap=()=>{
         navigate('/walkingMap')
     }
-
 
     const toggleReminder = (id) => {
         setReminders(reminders.map(reminder =>
@@ -329,7 +374,7 @@ const Timeline = () => {
                     <p>Time table</p>
                 </div>
                 <div className="menu-details">
-                    <img className="CalendarImage" src={CalendarImage} alt="Calendar" onClick={goToCalendar} />
+                    <img className="CalendarImage" src={CalendarImage} alt="Calendar" onClick={goToCalendarMake} />
                     <p>Calendar</p>
                 </div>
                 <div className="menu-details">
@@ -345,4 +390,4 @@ const Timeline = () => {
     );
 };
 
-export default Timeline;
+export default TimelineMake;

@@ -87,22 +87,18 @@ const AddFlexSchedulePage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const hours = scheduleData.flexDuration.split(':')[0].padStart(2, '0');
-            const minutes = scheduleData.flexDuration.split(':')[1].padStart(2, '0');
-            const formattedDuration = `${hours}:${minutes}:00`;
+            const formattedDuration = `${scheduleData.flexDuration}:00`;
 
             const formattedData = {
-
                 unfixedTitle: scheduleData.flexTitle,
-                scheduleDate: scheduleData.flexDeadline.split('T')[0],
-                unfixedTime: formattedDuration, // 올바른 LocalTime 형식
-                unfixedDeadline: scheduleData.flexDeadline.split('T')[0],
+                scheduleDate: scheduleData.flexDeadline,  // 날짜만 전송
+                unfixedTime: formattedDuration,
+                unfixedDeadline: scheduleData.flexDeadline,  // 날짜만 전송
                 unfixedMemo: scheduleData.flexMemo,
                 categoryId: scheduleData.categoryCode ? parseInt(scheduleData.categoryCode, 10) : null,
                 placeId: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
                 unfixedImportance: scheduleData.importance,
                 reminderMark: false
-
             };
 
             let response;
@@ -112,7 +108,6 @@ const AddFlexSchedulePage = () => {
                 response = await axios.post('http://localhost:8080/api/unfixed-schedules', formattedData);
             }
 
-            console.log('Navigating with new event:', response.data);
             navigate('/Main', { state: { newEvent: response.data } });
         } catch (error) {
             console.error('Error response:', error.response);
@@ -120,11 +115,15 @@ const AddFlexSchedulePage = () => {
         }
     };
 
+    useEffect(() => {
+        const colors = {};
+        setCategoryColor(colors);
+    }, []);
 
     useEffect(() => {
         const datetimeConfig = {
-            enableTime: true,
-            dateFormat: "Y-m-d\\TH:i",
+            enableTime: false,  // 시간 선택 비활성화
+            dateFormat: "Y-m-d",  // 날짜 형식으로 설정
             onChange: (selectedDates, dateStr) => {
                 setScheduleData(prevData => ({
                     ...prevData,
@@ -139,13 +138,17 @@ const AddFlexSchedulePage = () => {
         setScheduleData((prevData) => ({ ...prevData, importance: level }));
     };
 
-    const handleSearchClick = () => {
-        navigate('/Map');
+    const handlePlaceInputClick = () => {
+        navigate('/Map', { state: { from: '/AddFlexSchedule' } });
     };
+
+    const goToMain=()=>{
+        navigate('/main')
+    }
 
     return (
         <div className="addFlex-gray-box">
-            <button type="button" className="addFlex-back-button" onClick={() => window.history.back()}>
+            <button type="button" className="addFlex-back-button" onClick={goToMain}>
                 &lt;
             </button>
             <button type="submit" className="addFlex-submit" form="addFlex-form">완료</button>
@@ -165,8 +168,9 @@ const AddFlexSchedulePage = () => {
                     </div>
                     <div className="addFlex-input-container">
                         <label htmlFor="flexDeadline">마감기한</label>
-                        <input type="datetime-local" className="deadline-picker" name="flexDeadline" id="flexDeadline"
-                               placeholder="마감 기한" value={scheduleData.flexDeadline} onChange={handleInputChange}/>
+                        <input type="text" className="deadline-picker" name="flexDeadline" id="flexDeadline"
+                               placeholder="마감 기한" value={scheduleData.flexDeadline}
+                               onChange={handleInputChange}/>
                     </div>
                     <div className="addFlex-input-container">
                         <label>요일 반복</label>
@@ -183,9 +187,27 @@ const AddFlexSchedulePage = () => {
                         </div>
                     </div>
                     <div className="addFlex-input-container">
+                        <label>중요도</label>
+                        <div className="priority-selector">
+                            {[1, 2, 3, 4, 5].map(level => (
+                                <FaStar key={level}
+                                        className={`star-icon ${scheduleData.importance >= level ? 'selected' : ''}`}
+                                        onClick={() => setPriority(level)}
+                                        style={{
+                                            color: scheduleData.importance >= level ? '#80A160' : '#ccc',
+                                            cursor: 'pointer',
+                                            marginRight: '5px' // Adjusting the margin between stars
+                                        }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="addFlex-input-container">
                         <label htmlFor="placeName">장소</label>
-                        <input type="text" name="placeName" value={scheduleData.placeName} onChange={handleInputChange} />
-                        <button type="button" onClick={handleSearchClick}>검색</button>
+                        <input type="text" name="placeName" value={scheduleData.placeName}
+                               placeholder="장소를 검색하세요."
+                               onChange={handleInputChange} onClick={handlePlaceInputClick}/>
                     </div>
                     <div className="addFlex-input-container">
                         <label htmlFor="categoryCode">카테고리</label>

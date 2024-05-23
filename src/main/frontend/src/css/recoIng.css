@@ -70,6 +70,19 @@
 }
 
 /* 타임 테이블 */
+.timeline-event {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-radius: 4px; /* 모서리를 둥글게 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 14px; /* 폰트 크기 */
+}
+
+.timeline-event .event-place {
+    margin-top: -5px; /* 요소 간의 간격을 동일하게 설정 */
+}
+
 .recoing-timetable-container {
     border: 1px solid #ccc;
     border-radius: 10px;

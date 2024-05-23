@@ -4,6 +4,15 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import './css/addNormalCal.css'; // CSS 파일 import
 import axios from 'axios'; // axios import
+
+const categoryNames = {
+    0: '졸프',
+    1: '약속',
+    2: '예약',
+    3: '수업',
+    // 필요에 따라 추가 카테고리를 여기에 정의
+};
+
 const AddNormalSchedulePage = () => {
     const location = useLocation();
     const [selectedPlace, setSelectedPlace] = useState('');
@@ -145,13 +154,17 @@ const AddNormalSchedulePage = () => {
         }
     }, [isTimeToggleOn]);
 
-    const handleSearchClick = () => {
-        navigate('/Map');
+    const handlePlaceInputClick = () => {
+        navigate('/Map', { state: { from: '/AddNormalSchedule' } });
     };
+
+    const goToMain=()=>{
+        navigate('/main')
+    }
 
     return (
         <div className="addNor-gray-box">
-            <button type="button" className="addNor-back-button" onClick={() => window.history.back()}>
+            <button type="button" className="addNor-back-button" onClick={goToMain}>
                 &lt;
             </button>
             <button type="submit" className="addNor-submit" form="addNor-form">완료</button>
@@ -194,13 +207,18 @@ const AddNormalSchedulePage = () => {
                     <div className="addFlex-input-container">
                         <label htmlFor="placeName">장소</label>
                         <input type="text" name="placeName" value={scheduleData.placeName}
-                               onChange={handleInputChange}/>
-                        <button type="button" onClick={handleSearchClick}>검색</button>
+                               placeholder="장소를 입력하세요."
+                               onChange={handleInputChange} onClick={handlePlaceInputClick}/>
                     </div>
                     <div className="addNor-input-container">
                         <label>카테고리</label>
-                        <input type="number" className="categoryCode" name="categoryCode" id="categoryCode"
-                               placeholder="기타" value={scheduleData.categoryCode} onChange={handleInputChange}/>
+                        <select className="categoryCode" name="categoryCode" value={scheduleData.categoryCode}
+                                onChange={handleInputChange}>
+                            <option value="">카테고리를 선택하세요</option>
+                            {Object.entries(categoryNames).map(([code, name]) => (
+                                <option key={code} value={name}>{name}</option>
+                            ))}
+                        </select>
                     </div>
                     <div className="addNor-input-container">
                         <label>메모</label>

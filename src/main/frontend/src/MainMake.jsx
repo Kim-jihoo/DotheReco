@@ -22,13 +22,10 @@ const Main = () => {
     const [showEstimatedPicker, setShowEstimatedPicker] = useState(false);
     const [selectedEstimated, setSelectedEstimated] = useState('');
 
-
-  //  const [recommendedSlots, setRecommendedSlots] = useState([]); /////
-
- //   const [recommendedTimes, setRecommendedTimes] = useState([]); // 추천된 시간대를 저장하는 상태
-
+    //  const [recommendedSlots, setRecommendedSlots] = useState([]); /////
 
     const [recommendedTimes, setRecommendedTimes] = useState([]); // 추천된 시간대를 저장하는 상태
+
 
     const getCategoryColor = (categoryCode) => {
         // 카테고리 코드에 따라 다른 색상을 반환
@@ -190,7 +187,7 @@ const Main = () => {
         for (let i = 1; i <= mini_daysInMonth; i++) {
             mini_days.push(i);
         }
-/*
+
         const handleMouseDown = (day) => {
             if (day !== '') {
                 if (selectedDatesRef.current.has(day)) {
@@ -209,25 +206,7 @@ const Main = () => {
                 setSelectedMiniDates(Array.from(selectedDatesRef.current));
             }
         };
-*/
-        const handleMouseDown = (day) => {
-            if (day !== '') {
-                if (selectedDatesRef.current.has(day)) {
-                    selectedDatesRef.current.delete(day);
-                } else {
-                    selectedDatesRef.current.add(day);
-                }
-                setSelectedMiniDates(Array.from(selectedDatesRef.current));
-            }
-            setIsDragging(true);
-        };
 
-        const handleMouseOver = (day) => {
-            if (isDragging && day !== '') {
-                selectedDatesRef.current.add(day);
-                setSelectedMiniDates(Array.from(selectedDatesRef.current));
-            }
-        };
         const handleMouseUp = () => {
             setIsDragging(false);
         };
@@ -277,38 +256,38 @@ const Main = () => {
         document.querySelector('.back-bg').style.display = 'none';
     };
 
-/*
-    const onRecommendClick = () => {
-        document.querySelector('.search-popup-wrap').style.display = 'none';
-        document.querySelector('.searchList-popup-wrap').style.display = 'block';
-        document.querySelector('.back-bg').style.display = 'block';
-    };
-    const onRecommendClick = async () => {
-        try {
-            const dateFormatted = mini_date.toISOString().split('T')[0];
-            const durationParts = selectedEstimated.split(':');
-            const hours = parseInt(durationParts[0]);
-            const minutes = parseInt(durationParts[1]);
-            const expectedDuration = `PT${hours}H${minutes}M`;
-
-            const response = await axios.get('http://localhost:8080/api/time/recommend', {
-                params: {
-                    date: dateFormatted,
-                    expectedDuration: expectedDuration,
-                },
-            });
-
-            console.log('추천된 시간대:', response.data);
-            setRecommendedSlots(response.data);
-
+    /*
+        const onRecommendClick = () => {
             document.querySelector('.search-popup-wrap').style.display = 'none';
             document.querySelector('.searchList-popup-wrap').style.display = 'block';
             document.querySelector('.back-bg').style.display = 'block';
-        } catch (error) {
-            console.error('시간대 추천 오류:', error);
-        }*/
+        };
+        const onRecommendClick = async () => {
+            try {
+                const dateFormatted = mini_date.toISOString().split('T')[0];
+                const durationParts = selectedEstimated.split(':');
+                const hours = parseInt(durationParts[0]);
+                const minutes = parseInt(durationParts[1]);
+                const expectedDuration = `PT${hours}H${minutes}M`;
 
-/*
+                const response = await axios.get('http://localhost:8080/api/time/recommend', {
+                    params: {
+                        date: dateFormatted,
+                        expectedDuration: expectedDuration,
+                    },
+                });
+
+                console.log('추천된 시간대:', response.data);
+                setRecommendedSlots(response.data);
+
+                document.querySelector('.search-popup-wrap').style.display = 'none';
+                document.querySelector('.searchList-popup-wrap').style.display = 'block';
+                document.querySelector('.back-bg').style.display = 'block';
+            } catch (error) {
+                console.error('시간대 추천 오류:', error);
+            }*/
+
+
     const onRecommendClick = async () => {
         document.querySelector('.search-popup-wrap').style.display = 'none';
         document.querySelector('.searchList-popup-wrap').style.display = 'block';
@@ -338,7 +317,7 @@ const Main = () => {
             }
         ];
         setRecommendedTimes(mockRecommendedTimes);
-*/
+
         /*
         try {
             //임의의 데이터 생성
@@ -356,41 +335,7 @@ const Main = () => {
         }
         */
 
-    //};
-    const onRecommendClick = async () => {
-        try {
-            const selectedDates = selectedMiniDates.map(day => {
-                const date = new Date(mini_date.getFullYear(), mini_date.getMonth(), day + 1); // 날짜를 올바르게 맞추기 위해 day + 1
-                return date.toISOString().split('T')[0];
-            });
-
-            const durationParts = selectedEstimated.split(':');
-            const hours = parseInt(durationParts[0]);
-            const minutes = parseInt(durationParts[1]);
-            const expectedDuration = `PT${hours}H${minutes}M`;
-
-            const response = await axios.post('http://localhost:8080/api/time/recommend', {
-                dates: selectedDates,
-                expectedDuration: expectedDuration,
-            });
-
-            const formattedTimes = response.data.map(slot => ({
-                date: slot.date,
-                startTime: slot.startTime,
-                endTime: slot.endTime,
-            }));
-
-            setRecommendedTimes(formattedTimes);
-
-            document.querySelector('.search-popup-wrap').style.display = 'none';
-            document.querySelector('.searchList-popup-wrap').style.display = 'block';
-            document.querySelector('.back-bg').style.display = 'block';
-        } catch (error) {
-            console.error('시간대 추천 오류:', error);
-        }
     };
-
-
 
     const goToaddNormalSchedule = () => {
         // "일반 스케줄 추가" 버튼을 누를 때 기존의 일정들을 유지하기 위해 새로운 이벤트를 추가하지 않습니다.
@@ -423,7 +368,7 @@ const Main = () => {
         document.querySelector('.searchList-popup-wrap').style.display = 'none';
         document.querySelector('.back-bg').style.display = 'block';
     };
-/*
+
     useEffect(() => {
         // 새로운 이벤트가 추가되면 이를 캘린더에 반영
         if (location.state && location.state.newEvent) {
@@ -431,13 +376,13 @@ const Main = () => {
             const updatedEvents = [...events, newEvent];
             setEvents(updatedEvents);
         }
-    }, [location.state]);*/
-/*
+    }, [location.state]);
+
     useEffect(() => {
         // 페이지를 새로고침할 때마다 로컬 스토리지에서 이전에 저장된 이벤트 목록을 가져와서 캘린더에 표시합니다.
         const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
         setEvents(storedEvents);
-    }, []);*/
+    }, []);
 
     const handleEstimatedClick = () => {
         setShowEstimatedPicker(true);
@@ -530,17 +475,16 @@ const Main = () => {
                             {recommendedTimes.map((time, index) => (
                                 <div key={index} className="recommended-time">
                                     <div className="time-box">
-                                        날짜: {time.date}<br />
-                                        시작 시간: {time.startTime}<br />
-                                        종료 시간: {time.endTime}
+                                        날짜: {time.date}<br/>
+                                        시간: {time.starttime} - {time.endtime}
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
 
             {/*addSchedule 눌렀을 때 뜨는 팝업 창*/}
             <div className="addSche-popup-wrap">

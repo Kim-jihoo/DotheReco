@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './css/recommendation.css';
+import './css/recoIng.css';
 import { useNavigate } from "react-router-dom";
 import TimeTableImage from "./images/Time table.png";
 import CalendarImage from "./images/Calendar.png";
 import TodoListImage from "./images/할 일 list.png";
 import SettingImage from "./images/Setting.png";
-import axios from 'axios';
 
 // 카테고리별 색상 정의
 const categoryColors = {
@@ -21,99 +20,84 @@ const categoryNames = {
     2: '예약',
     3: '수업'
 };
-/*
-const RecommendationPage = () => {
+
+const RecoIngMake = ({ recommendedSchedules }) => {
     const navigate = useNavigate();
-    const [selectedDate, setSelectedDate] = useState(0);
     const [dates, setDates] = useState([]);
-    //const [recommendedSchedules, setRecommendedSchedules] = useState([]); // 유동 스케줄 데이터 상태
+    const [timeTable, setTimeTable] = useState([]);
+    const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+    const [schedules, setSchedules] = useState([]);
+    const [selectedSchedules, setSelectedSchedules] = useState([]);
     const [isLoading, setLoading] = useState(false); // 로딩 상태를 저장할 상태 변수
 
-    const [timeTable, setTimeTable] = useState([]);
-/*
-    const goToRecoIng = async () => {
-        try {
-
-            // 백엔드로부터 유동 스케줄 데이터를 받아오는 비동기 함수 호출
-            const response = await fetch('백엔드 API 주소');
-            if (!response.ok) {
-                throw new Error('유동 스케줄 데이터를 가져오는데 실패했습니다.');
-            }
-            const data = await response.json();
-            // 받아온 데이터를 상태로 설정
-            setRecommendedSchedules(data);
-            // RecoIng 컴포넌트로 이동
-            navigate('/RecoIng'); // RecoIng 컴포넌트의 경로에 맞게 수정
-        } catch (error) {
-            console.error('Error fetching recommended schedules:', error.message);
-        }
-    };
-    */
-
     useEffect(() => {
-        const today = new Date();
-        const dateList = [];
-        for (let i = -4; i <= 4; i++) {
-            const newDate = new Date(today);
-            newDate.setDate(today.getDate() + i);
-            dateList.push({
-                date: newDate.getDate()
-            });
-        }
-        setDates(dateList);
-        setSelectedDate(4); // Today is in the middle of the list
+        const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+        const flexibleSchedules = storedEvents.filter(event => event.flexTitle);
+        const sortedSchedules = flexibleSchedules.sort((a, b) => {
+            const dateA = new Date(a.flexDeadline);
+            const dateB = new Date(b.flexDeadline);
+            return dateA - dateB;
+        });
+        setSchedules(sortedSchedules);
     }, []);
 
     useEffect(() => {
         const loadEvents = () => {
             const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
             const today = new Date();
-            today.setDate(today.getDate() + (selectedDate - 4)); // Adjust date based on selectedDate
-
             const eventsForSelectedDate = storedEvents.filter(event => {
                 const eventDate = new Date(event.fixedStartDay);
                 return eventDate.toDateString() === today.toDateString();
             });
 
-            const timeTableEvents = eventsForSelectedDate.map(event => ({
-                startTime: event.fixedStartTime,
-                endTime: event.fixedEndTime,
-                event: event.fixedTitle,
-                category: event.categoryCode // Ensure categoryCode is included
-            }));
-            setTimeTable(timeTableEvents);
-        };
-        loadEvents();
-    }, [selectedDate]);
-*/
-const RecommendationPage = () => {
-    const navigate = useNavigate();
-    const [timeTable, setTimeTable] = useState([]);
+            // 미리 정의된 일정 추가
+            const predefinedSchedules = [
+                {
+                    startTime: "09:30",
+                    endTime: "12:30",
+                    event: "인공지능 과제",
+                    category: 1,
+                    place: "이화여대 아산공학관"
+                },
+                {
+                    startTime: "15:00",
+                    endTime: "16:00",
+                    event: "올리브영",
+                    category: 3,
+                    place: "올리브영 신촌명물거리점"
+                },
+                {
+                    startTime: "19:00",
+                    endTime: "20:00",
+                    event: "헬스장",
+                    category: 2,
+                    place: "헬스보이짐 프리미엄 신촌점"
+                },
+                {
+                    startTime: "20:30",
+                    endTime: "21:30",
+                    event: "과외 준비",
+                    category: 0,
+                    place: "집"
+                }
+            ];
 
-    useEffect(() => {
-        const fetchTodaySchedules = async () => {
-            const today = new Date().toISOString().split('T')[0];
-            try {
-                const response = await axios.get(`http://localhost:8080/api/fixed/date/${today}`);
-                const eventsForToday = response.data.map(event => ({
+            // 오늘의 일정과 미리 정의된 일정을 합치기
+            const timeTableEvents = [
+                ...predefinedSchedules,
+                ...eventsForSelectedDate.map(event => ({
                     startTime: event.fixedStartTime,
                     endTime: event.fixedEndTime,
                     event: event.fixedTitle,
-                    category: event.categoryCode
-                }));
-                setTimeTable(eventsForToday);
-            } catch (error) {
-                console.error('일정을 가져오는 중 오류 발생:', error);
-            }
+                    category: event.categoryCode,
+                    place: event.place || ""
+                }))
+            ];
+
+            setTimeTable(timeTableEvents);
         };
-
-        fetchTodaySchedules();
+        loadEvents();
     }, []);
-
-    const goToRecoIng = () => {
-        navigate('/RecoIng');
-    };
-
     const goToTimeLine = () => {
         navigate('/timeLine');
     };
@@ -126,18 +110,17 @@ const RecommendationPage = () => {
         navigate('/ToDolist');
     };
 
-    const goToSetting=()=>{
+    const goToSetting = () => {
         navigate('/Setting');
     }
-
-    const goToRecoIngMake = () => {
+    const goToTimeLineMake = () => {
         // 페이지 이동 전에 로딩 상태를 설정합니다.
         // 이 예시에서는 setLoading 함수를 통해 로딩 상태를 변경합니다.
         setLoading(true);
 
         // setTimeout 함수를 사용하여 일정 시간이 지난 후에 페이지 이동을 수행합니다.
         setTimeout(() => {
-            navigate('/RecoIngMake');
+            navigate('/TimeLineMake');
         }, 2000); // 2000밀리초(2초) 후에 페이지 이동
 
         // setTimeout 함수를 사용하여 임의로 추가한 로딩 시간이 지난 후에 로딩 상태를 해제할 수 있습니다.
@@ -156,36 +139,60 @@ const RecommendationPage = () => {
     const calculateTimeDifference = (startTime, endTime) => {
         const start = new Date(`1970-01-01T${startTime}Z`);
         const end = new Date(`1970-01-01T${endTime}Z`);
-        return (end - start) / (1000 * 60); // minutes
+        return (end - start) / (1000 * 60);
     };
 
     const getCategoryColor = (categoryCode) => {
-        return categoryColors[categoryCode] || '#DBE9CD'; // 기본 색상: 졸프
+        return categoryColors[categoryCode] || '#DBE9CD';
     };
 
     const getCategoryName = (categoryCode) => {
         return categoryNames[categoryCode] || '졸프';
     };
 
-    // 새벽 1시부터 7시까지의 이벤트 필터링
     const filteredTimeTable = timeTable.filter(item => {
         const [hour] = item.startTime.split(':');
         return parseInt(hour) >= 7 || parseInt(hour) === 0;
     });
 
+    const toggleSideBar = () => {
+        setIsSideBarOpen(!isSideBarOpen);
+    };
+
+    const closeSideBar = () => {
+        setIsSideBarOpen(false);
+    };
+
+    const handleScheduleChange = (index) => {
+        const updatedSelectedSchedules = [...selectedSchedules];
+        if (updatedSelectedSchedules.includes(index)) {
+            const scheduleIndex = updatedSelectedSchedules.indexOf(index);
+            updatedSelectedSchedules.splice(scheduleIndex, 1);
+        } else {
+            updatedSelectedSchedules.push(index);
+        }
+        setSelectedSchedules(updatedSelectedSchedules);
+    };
+
+
     return (
-        <div className="reco-gray-box">
-            <button type="button" className="reco-back-button" onClick={() => window.history.back()}>
+        <div className={`recoing-gray-box ${isSideBarOpen ? 'sidebar-open' : ''}`}>
+            <button type="button" className="recoing-back-button" onClick={() => window.history.back()}>
                 &lt;
             </button>
-            <button type="submit" className="reco-submit" form="reco-form" onClick={goToRecoIngMake}>추천</button>
+            <button type="button" className="recoing-edit-submit" onClick={toggleSideBar}>
+                수정
+            </button>
+            <button type="submit" className="recoing-submit" form="reco-form">추천</button>
+            <button type="submit" className="recoing-complete-submit" form="reco-form" onClick={goToTimeLineMake}>완료</button>
+
             {/* 타임 테이블 */}
-            <div className="reco-timetable-container">
-                <div className="reco-timetable">
+            <div className="recoing-timetable-container">
+                <div className="recoing-timetable">
                     {[...Array(17)].map((_, hour) => (
-                        <div className="reco-hour" key={hour}>
-                            <div className="reco-half-hour">
-                                <div className="reco-time-label">{formatTime(`${hour + 7}:00`)}</div>
+                        <div className="recoing-hour" key={hour}>
+                            <div className="recoing-half-hour">
+                                <div className="recoing-time-label">{formatTime(`${hour + 7}:00`)}</div>
                                 {filteredTimeTable.map((item, index) => {
                                     const [startHour, startMinute] = item.startTime.split(':').map(Number);
                                     const [endHour, endMinute] = item.endTime.split(':').map(Number);
@@ -197,7 +204,7 @@ const RecommendationPage = () => {
                                                 key={index}
                                                 style={{
                                                     top: `${startMinute}px`,
-                                                    height: `${duration * 1.4}px`, // Each minute is 2 pixels
+                                                    height: `${duration * 1.4}px`,
                                                     backgroundColor: getCategoryColor(item.category)
                                                 }}
                                             >
@@ -205,29 +212,27 @@ const RecommendationPage = () => {
                                                 <div className="event-time">
                                                     {formatTime(item.startTime)} - {formatTime(item.endTime)}
                                                 </div>
-                                                <div className="event-category-container">
-                                                    <div
-                                                        className="event-category">{getCategoryName(item.category)}</div>
-                                                </div>
+                                                <div className="event-place">{item.place}</div>
                                             </div>
                                         );
                                     }
                                     return null;
                                 })}
                             </div>
-                            <div className="reco-half-hour">
-                                <div className="reco-time-label">{formatTime(`${hour + 7}:30`)}</div>
+                            <div className="recoing-half-hour">
+                                <div className="recoing-time-label">{formatTime(`${hour + 7}:30`)}</div>
                                 {filteredTimeTable.map((item, index) => {
                                     const [startHour, startMinute] = item.startTime.split(':').map(Number);
+                                    const [endHour, endMinute] = item.endTime.split(':').map(Number);
                                     if (startHour === hour + 7 && startMinute > 30) {
                                         const duration = calculateTimeDifference(item.startTime, item.endTime);
                                         return (
                                             <div
-                                                className="reco-event"
+                                                className="timeline-event"
                                                 key={index}
                                                 style={{
                                                     top: `${startMinute}px`,
-                                                    height: `${duration * 2}px`, // Each minute is 2 pixels
+                                                    height: `${duration * 1.4}px`,
                                                     backgroundColor: getCategoryColor(item.category)
                                                 }}
                                             >
@@ -235,6 +240,7 @@ const RecommendationPage = () => {
                                                 <div className="event-time">
                                                     {formatTime(item.startTime)} - {formatTime(item.endTime)}
                                                 </div>
+                                                <div className="event-place">{item.place}</div>
                                             </div>
                                         );
                                     }
@@ -246,27 +252,49 @@ const RecommendationPage = () => {
                 </div>
             </div>
 
+            {/* 사이드바 */}
+            <div className={`sidebar ${isSideBarOpen ? 'open' : ''}`}>
+                <div className="sidebar-content">
+                    <h2 className="reco-sidebar-flex">유동 스케줄</h2>
+                    <ul className="schedule-list">
+                        {schedules.map((schedule, index) => (
+                            <li key={index} className="schedule-item">
+                                {schedule.unfixedTitle}
+                                <input
+                                    type="checkbox"
+                                    checked={selectedSchedules.includes(index)}
+                                    onChange={() => handleScheduleChange(index)}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
             {/* 하단 메뉴 바 */}
             <div className="menu">
-                <div className="menu-details">
-                    <img className="TimeTableImage" src={TimeTableImage} alt="Time Table" onClick={goToTimeLine}/>
+                <div className="menu-details" onClick={goToTimeLine}>
+                    <img className="TimeTableImage" src={TimeTableImage} alt="Time Table"/>
                     <p>Time table</p>
                 </div>
-                <div className="menu-details">
-                    <img className="CalendarImage" src={CalendarImage} alt="Calendar" onClick={goToCalendar}/>
+                <div className="menu-details" onClick={goToCalendar}>
+                    <img className="CalendarImage" src={CalendarImage} alt="Calendar"/>
                     <p>Calendar</p>
                 </div>
-                <div className="menu-details">
-                    <img className="TodoListImage" src={TodoListImage} alt="To Do List" onClick={goToToDoList}/>
+                <div className="menu-details" onClick={goToToDoList}>
+                    <img className="TodoListImage" src={TodoListImage} alt="To Do List"/>
                     <p>To Do list</p>
                 </div>
-                <div className="menu-details">
-                    <img className="SettingImage" src={SettingImage} alt="Setting" onClick={goToSetting}/>
+                <div className="menu-details" onClick={goToSetting}>
+                    <img className="SettingImage" src={SettingImage} alt="Setting"/>
                     <p>Setting</p>
                 </div>
             </div>
+
+            {/* 화면을 클릭하면 사이드바 닫기 */}
+            {isSideBarOpen && <div className="sidebar-overlay" onClick={closeSideBar}></div>}
         </div>
     );
 };
 
-export default RecommendationPage;
+export default RecoIngMake;

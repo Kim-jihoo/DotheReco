@@ -2,6 +2,7 @@ package com.dothereco.DotheReco.service;
 
 import com.dothereco.DotheReco.domain.Category;
 import com.dothereco.DotheReco.domain.Fixed;
+import com.dothereco.DotheReco.domain.TimeBlock;
 import com.dothereco.DotheReco.dto.FixedScheduleDTO;
 import com.dothereco.DotheReco.mapper.FixedScheduleMapper;
 import com.dothereco.DotheReco.repository.CategoryRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,8 +29,7 @@ public class FixedScheduleService {
     private final FixedScheduleMapper fixedScheduleMapper;
     private final CategoryRepository categoryRepository;
 
-    private final ScheduleRecService scheduleRecService;
-
+/*
     @Transactional(readOnly = true)
     public List<TimeRange> recommendTimeSlotsForUser(Long userId, LocalDate date, Duration expectedDuration){
         LocalDate startDate = date;
@@ -54,7 +53,25 @@ public class FixedScheduleService {
                 .collect(Collectors.toList());
         return busySlots;
     }
-
+@Transactional(readOnly = true)
+public List<TimeRange> getBusyTimeSlots(LocalDate date) {
+    List<Fixed> userSchedules = fixedScheduleRepository.findAllByFixedStartDay(date);
+    return userSchedules.stream()
+            .map(schedule -> new TimeRange(schedule.getFixedStartTime(), schedule.getFixedEndTime()))
+            .collect(Collectors.toList());
+}*/
+@Transactional(readOnly = true)
+public List<TimeBlock> getBusyTimeSlots(LocalDate date) {
+    List<Fixed> userSchedules = fixedScheduleRepository.findAllByFixedStartDay(date);
+    return userSchedules.stream()
+            .map(schedule -> {
+                TimeBlock timeBlock = new TimeBlock();
+                timeBlock.setTbStartTime(schedule.getFixedStartTime());
+                timeBlock.setTbEndTime(schedule.getFixedEndTime());
+                return timeBlock;
+            })
+            .collect(Collectors.toList());
+}
 
     @Transactional
     public Fixed addFixed(FixedScheduleDTO fixedScheduleDto) {
@@ -122,6 +139,5 @@ public class FixedScheduleService {
                 .map(fixedScheduleMapper::toDto)
                 .collect(Collectors.toList());
     }
-
 
 }
