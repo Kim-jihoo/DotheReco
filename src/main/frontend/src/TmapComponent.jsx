@@ -40,9 +40,9 @@ const TmapComponent = () => {
         const place = selectedPlace || searchKeyword;
 
         const previousPath = location.state?.from || '/';
+        const scheduleData = location.state?.scheduleData || {};
 
-        navigate(previousPath, { state: { place } });
-
+        navigate(previousPath, { state: { place, scheduleData: { ...scheduleData, placeName: place } } });
     };
 
     return (

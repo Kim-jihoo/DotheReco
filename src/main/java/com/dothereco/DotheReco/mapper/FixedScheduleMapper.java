@@ -32,6 +32,9 @@ public class FixedScheduleMapper {
             dto.setCategoryName(fixed.getCategory().getCategoryName());
             dto.setCategoryColor(fixed.getCategory().getColor().toString());
         }
+        if (fixed.getPlace() != null) {
+            dto.setPlaceName(fixed.getPlace().getPlaceName());  // placeName 설정 추가
+        }
 
         return dto;
     }

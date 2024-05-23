@@ -29,12 +29,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 420px; /* Reduce the width of the content */
+    width: 400px; /* Reduce the width of the content */
     height: 540px; /* Adjust the height as needed */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 80px;
+    margin-top: 70px;
     overflow: hidden; /* Prevent scrolling */
     border: 2px solid #000000;
+    border-radius: 10px;
 }
 
 .Tmap_wrap {
@@ -47,12 +48,18 @@
 .Tmapplace-timetable-container {
     border: 1px solid #ccc;
     border-radius: 10px;
-    height: 210px;
+    height: 200px;
     overflow-y: scroll;
     font-family: 'NanumSquareRound',sans-serif;
     font-weight: bold;
-    margin-top: 25px;
-    width: 420px;
+    margin-top: 10px;
+    width: 400px;
+}
+
+.route-info{
+    margin-top: 2px;
+    font-family: 'NanumSquareRound',sans-serif;
+    font-weight: bold;
 }
 
 .Tmapplace-timetable {

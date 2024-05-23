@@ -22,32 +22,40 @@ const Main = () => {
     const [showEstimatedPicker, setShowEstimatedPicker] = useState(false);
     const [selectedEstimated, setSelectedEstimated] = useState('');
 
-
   //  const [recommendedSlots, setRecommendedSlots] = useState([]); /////
-
- //   const [recommendedTimes, setRecommendedTimes] = useState([]); // 추천된 시간대를 저장하는 상태
-
-
     const [recommendedTimes, setRecommendedTimes] = useState([]); // 추천된 시간대를 저장하는 상태
 
     const getCategoryColor = (categoryCode) => {
         // 카테고리 코드에 따라 다른 색상을 반환
         switch (categoryCode) {
-            case '과제':
-                return '#F0CAB9'; // 카테고리 코드 1에 대한 색상
+            case 1:
+                return '#DBE9CD'; // 카테고리 코드 1에 대한 색상
             case 2:
-                return '#FAE4A8'; // 카테고리 코드 2에 대한 색상
+                return '#F0CAB9'; // 카테고리 코드 2에 대한 색상
             case 3:
-                return '#B9DEF0' //카테고리 코드 3에 대한 색상
+                return '#CC99FF'; // 카테고리 코드 3에 대한 색상
+            case 4:
+                return '#FAE4A8'; // 카테고리 코드 4에 대한 색상
+            case 5:
+                return '#B9DEF0'; // 카테고리 코드 5에 대한 색상
+            case 6:
+                return '#FFDEAD'; // 카테고리 코드 6에 대한 색상
             default:
                 return '#DBE9CD'; // 기본 색상
         }
     };
+
     useEffect(() => {
         const fetchEvents = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/fixed');
-                setEvents(response.data);
+                // 가져온 일정 데이터에 포함된 카테고리 코드를 사용하여 각 일정의 색상을 설정
+                const coloredEvents = response.data.map(event => ({
+                    ...event,
+                    color: getCategoryColor(event.categoryCode)
+                }));
+                // 색상이 설정된 일정 데이터를 상태에 저장
+                setEvents(coloredEvents);
             } catch (error) {
                 console.error('일정을 가져오는 중 오류 발생:', error);
             }
@@ -55,6 +63,7 @@ const Main = () => {
 
         fetchEvents();
     }, []);
+
 
     /*
 // 외부 페이지에서 전달받은 데이터 처리
@@ -90,6 +99,7 @@ const Main = () => {
             navigate(location.pathname, { replace: true });
         }
     }, [location.state?.newEvent]);
+
     const renderCalendar = () => {
         // 현재 날짜와 이벤트 목록을 가져옵니다.
         const viewYear = date.getFullYear();
@@ -141,7 +151,7 @@ const Main = () => {
                                 key={eventIndex}
                                 className="event-indicator"
                                 style={{
-                                    top: `${(eventIndex + 1) * 25}px`,
+                                    top: `${(eventIndex + 1.15) * 22}px`,
                                     backgroundColor: getCategoryColor(event.categoryCode)
                                 }}
                             >
@@ -154,7 +164,7 @@ const Main = () => {
                                 key={eventIndex}
                                 className="event-indicator"
                                 style={{
-                                    top: `${(eventIndex + 1) * 25}px`,
+                                    top: `${(eventIndex + 1.15) * 22}px`,
                                     backgroundColor: getCategoryColor(event.categoryCode)
                                 }}
                             >

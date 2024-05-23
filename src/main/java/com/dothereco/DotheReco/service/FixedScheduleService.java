@@ -2,11 +2,13 @@ package com.dothereco.DotheReco.service;
 
 import com.dothereco.DotheReco.domain.Category;
 import com.dothereco.DotheReco.domain.Fixed;
+import com.dothereco.DotheReco.domain.Place;
 import com.dothereco.DotheReco.domain.TimeBlock;
 import com.dothereco.DotheReco.dto.FixedScheduleDTO;
 import com.dothereco.DotheReco.mapper.FixedScheduleMapper;
 import com.dothereco.DotheReco.repository.CategoryRepository;
 import com.dothereco.DotheReco.repository.FixedScheduleRepository;
+import com.dothereco.DotheReco.repository.PlaceRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -28,8 +30,10 @@ public class FixedScheduleService {
     private final FixedScheduleRepository fixedScheduleRepository;
     private final FixedScheduleMapper fixedScheduleMapper;
     private final CategoryRepository categoryRepository;
+    private final PlaceRepository placeRepository; // PlaceRepository 의존성 주입 필요
 
-/*
+
+    /*
     @Transactional(readOnly = true)
     public List<TimeRange> recommendTimeSlotsForUser(Long userId, LocalDate date, Duration expectedDuration){
         LocalDate startDate = date;
@@ -77,15 +81,19 @@ public List<TimeBlock> getBusyTimeSlots(LocalDate date) {
     public Fixed addFixed(FixedScheduleDTO fixedScheduleDto) {
         Fixed fixed = fixedScheduleMapper.toEntity(fixedScheduleDto);
 
-        /*Category category = categoryRepository.findById(fixedScheduleDto.getCategoryCode())
-                .orElseThrow(()->new EntityNotFoundException("카테고리가 존재하지 않습니다"+fixedScheduleDto.getCategoryCode()));
-        fixed.setCategory(category);
-        return fixedScheduleRepository.save(fixed);*/
+
         if (fixedScheduleDto.getCategoryCode() != null) { // 카테고리 코드 존재 여부 확인
             Category category = categoryRepository.findById(fixedScheduleDto.getCategoryCode())
                     .orElseThrow(() -> new EntityNotFoundException("카테고리가 존재하지 않습니다" + fixedScheduleDto.getCategoryCode()));
             fixed.setCategory(category);
         } // 카테고리 코드가 없으면 카테고리 설정을 생략
+        Place place = placeRepository.findByPlaceName(fixedScheduleDto.getPlaceName())
+                .orElseGet(() -> {
+                    Place newPlace = new Place();
+                    newPlace.setPlaceName(fixedScheduleDto.getPlaceName());
+                    return placeRepository.save(newPlace);
+                });
+        fixed.setPlace(place);
 
         return fixedScheduleRepository.save(fixed);
 
@@ -125,6 +133,14 @@ public List<TimeBlock> getBusyTimeSlots(LocalDate date) {
                     .orElseThrow(() -> new EntityNotFoundException("카테고리를 찾을 수 없습니다" + fixedScheduleDto.getCategoryCode()));
             fixed.setCategory(category);
         }
+        // 장소 이름으로 장소를 찾거나 새로 생성
+        Place place = placeRepository.findByPlaceName(fixedScheduleDto.getPlaceName())
+                .orElseGet(() -> {
+                    Place newPlace = new Place();
+                    newPlace.setPlaceName(fixedScheduleDto.getPlaceName());
+                    return placeRepository.save(newPlace);
+                });
+        fixed.setPlace(place);
 
         return fixedScheduleRepository.save(fixed);
     }

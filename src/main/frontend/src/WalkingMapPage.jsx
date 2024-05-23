@@ -7,7 +7,7 @@ import TimeTableImage from "./images/Time table.png";
 import CalendarImage from "./images/Calendar.png";
 import TodoListImage from "./images/할 일 list.png";
 import SettingImage from "./images/Setting.png";
-
+import axios from 'axios';
 // 카테고리별 색상 정의
 const categoryColors = {
     1: '#F0CAB9', // 약속
@@ -27,10 +27,10 @@ const WalkingMapPage = () => {
     const [mapInitialized, setMapInitialized] = useState(false);
     const [map, setMap] = useState(null);
     const [markers, setMarkers] = useState([]);
-    const [userLocation, setUserLocation] = useState({lat: 37.561451, lon: 126.946778}); // 기본값은 이화여자대학교
-    const [coordinate1, setCoordinate1] = useState({lat: 37.556273117267686, lon: 126.93460205658282}); // 볼링장 좌표 1
-    const [coordinate2, setCoordinate2] = useState({lat: 37.558842397721314, lon: 126.94639583795444}); // 불밥 좌표 2
-    const [coordinate3, setCoordinate3] = useState({lat: 37.56680149281015, lon: 126.9487473277085}); // 신공학관 좌표
+    const [userLocation, setUserLocation] = useState({lat: 37.56170342835584, lon: 126.94238994640058}); // 기본값은 이화여자대학교
+    const [coordinate1, setCoordinate1] = useState({lat: 37.56680149281015, lon: 126.9487473277085}); // 신공학관 좌표
+    const [coordinate2, setCoordinate2] = useState({lat: 37.558798426576146, lon: 126.93931655974903}); // 올리브영 좌표
+    const [coordinate3, setCoordinate3] = useState({lat: 37.556049830250984, lon: 126.93824646263005}); // 헬스보이짐 좌표
     const mapRef = useRef(null);
     const navigate = useNavigate();
     const location = useLocation();
@@ -76,7 +76,7 @@ const WalkingMapPage = () => {
                 center: new window.Tmapv3.LatLng(userLocation.lat, userLocation.lon),
                 width: "100%",
                 height: "800px",
-                zoom: 16
+                zoom: 14
             });
             setMap(mapInstance);
 
@@ -241,6 +241,27 @@ const WalkingMapPage = () => {
         return parseInt(hour) >= 7 || parseInt(hour) === 0;
     });
 
+    useEffect(() => {
+        const fetchTodaySchedules = async () => {
+            const today = new Date().toISOString().split('T')[0];
+            try {
+                const response = await axios.get(`http://localhost:8080/api/fixed/date/${today}`);
+                const eventsForToday = response.data.map(event => ({
+                    startTime: event.fixedStartTime,
+                    endTime: event.fixedEndTime,
+                    event: event.fixedTitle,
+                    category: event.categoryCode,
+                    place: event.placeName // 장소 정보 추가
+                }));
+                setTimeTable(eventsForToday);
+            } catch (error) {
+                console.error('일정을 가져오는 중 오류 발생:', error);
+            }
+        };
+
+        fetchTodaySchedules();
+    }, []);
+
     const goToTimeLine = () => {
         navigate('/timeLine');
     };
@@ -299,6 +320,7 @@ const WalkingMapPage = () => {
                                                 </div>
                                                 <div className="event-category-container">
                                                     <div className="event-category">{getCategoryName(item.category)}</div>
+                                                    <div className="event-place">{item.place}</div> {/* 장소 표시 */}
                                                 </div>
                                             </div>
                                         );
@@ -326,6 +348,7 @@ const WalkingMapPage = () => {
                                                 <div className="event-time">
                                                     {formatTime(item.startTime)} - {formatTime(item.endTime)}
                                                 </div>
+                                                <div className="event-place">{item.place}</div> {/* 장소 표시 */}
                                             </div>
                                         );
                                     }

@@ -6,10 +6,12 @@ import './css/addNormalCal.css'; // CSS 파일 import
 import axios from 'axios'; // axios import
 
 const categoryNames = {
-    0: '졸프',
-    1: '약속',
-    2: '예약',
-    3: '수업',
+    1: '학교수업',
+    2: '과제',
+    3: '팀플',
+    4: '운동',
+    5: '생활',
+    6: '기타'
     // 필요에 따라 추가 카테고리를 여기에 정의
 };
 
@@ -24,24 +26,27 @@ const AddNormalSchedulePage = () => {
         fixedEndTime: '',
         fixedMemo: '',
         categoryCode: '',
-        placeName: selectedPlace,
+        placeName: '',
     });
     const [message, setMessage] = useState('');
     const [isTimeToggleOn, setIsTimeToggleOn] = useState(false);
     const navigate = useNavigate();
 
-
     useEffect(() => {
-
-        if (location.state && location.state.place) {
-            setSelectedPlace(location.state.place);
-            setScheduleData(prevData => ({
-                ...prevData,
-                placeName: location.state.place
-            }));
+        if (location.state) {
+            const { place, scheduleData: previousData } = location.state;
+            if (place) {
+                setSelectedPlace(place);
+                setScheduleData(prevData => ({
+                    ...prevData,
+                    placeName: place
+                }));
+            }
+            if (previousData) {
+                setScheduleData(previousData);
+            }
         }
     }, [location.state]);
-
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -50,10 +55,35 @@ const AddNormalSchedulePage = () => {
             [name]: value,
         }));
     };
-/*
+    /*
+        const handleSubmit = async (event) => {
+            event.preventDefault();
+            try {
+                const formattedData = {
+                    ...scheduleData,
+                    fixedStartDay: scheduleData.fixedStartDay,
+                    fixedEndDay: scheduleData.fixedEndDay,
+                    fixedStartTime: scheduleData.fixedStartTime ? scheduleData.fixedStartTime + ":00" : "00:00:00",
+                    fixedEndTime: scheduleData.fixedEndTime ? scheduleData.fixedEndTime + ":00" : "00:00:00",
+                    categoryCode: scheduleData.categoryCode ? parseInt(scheduleData.categoryCode, 10) : null,
+                    placeCode: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
+                };
+
+                const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
+                storedEvents.push(formattedData);
+                localStorage.setItem('events', JSON.stringify(storedEvents));
+
+                navigate('/Main', { state: { newEvent: formattedData } });
+            } catch (error) {
+                console.error('Error response:', error.response);
+                setMessage('일정 추가에 실패했습니다. 서버 오류가 발생했습니다.');
+            }
+        };*/
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            const categoryCode = Object.keys(categoryNames).find(key => categoryNames[key] === scheduleData.categoryCode);
+
             const formattedData = {
                 ...scheduleData,
                 fixedStartDay: scheduleData.fixedStartDay,
@@ -61,30 +91,11 @@ const AddNormalSchedulePage = () => {
                 fixedStartTime: scheduleData.fixedStartTime ? scheduleData.fixedStartTime + ":00" : "00:00:00",
                 fixedEndTime: scheduleData.fixedEndTime ? scheduleData.fixedEndTime + ":00" : "00:00:00",
                 categoryCode: scheduleData.categoryCode ? parseInt(scheduleData.categoryCode, 10) : null,
-                placeCode: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
-            };
 
-            const storedEvents = JSON.parse(localStorage.getItem('events')) || [];
-            storedEvents.push(formattedData);
-            localStorage.setItem('events', JSON.stringify(storedEvents));
+                placeName: scheduleData.placeName, // placeName으로 수정
 
-            navigate('/Main', { state: { newEvent: formattedData } });
-        } catch (error) {
-            console.error('Error response:', error.response);
-            setMessage('일정 추가에 실패했습니다. 서버 오류가 발생했습니다.');
-        }
-    };*/
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            const formattedData = {
-                ...scheduleData,
-                fixedStartDay: scheduleData.fixedStartDay,
-                fixedEndDay: scheduleData.fixedEndDay,
-                fixedStartTime: scheduleData.fixedStartTime ? scheduleData.fixedStartTime + ":00" : "00:00:00",
-                fixedEndTime: scheduleData.fixedEndTime ? scheduleData.fixedEndTime + ":00" : "00:00:00",
-                categoryCode: scheduleData.categoryCode ? parseInt(scheduleData.categoryCode, 10) : null,
-                placeCode: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
+                //placeCode: scheduleData.placeCode ? parseInt(scheduleData.placeCode, 10) : null,
+
             };
 
             await axios.post('http://localhost:8080/api/fixed', formattedData); // 백엔드 서버로 데이터 전송
@@ -155,7 +166,7 @@ const AddNormalSchedulePage = () => {
     }, [isTimeToggleOn]);
 
     const handlePlaceInputClick = () => {
-        navigate('/Map', { state: { from: '/AddNormalSchedule' } });
+        navigate('/Map', { state: { from: '/AddNormalSchedule',scheduleData } });
     };
 
     const goToMain=()=>{
@@ -212,13 +223,9 @@ const AddNormalSchedulePage = () => {
                     </div>
                     <div className="addNor-input-container">
                         <label>카테고리</label>
-                        <select className="categoryCode" name="categoryCode" value={scheduleData.categoryCode}
-                                onChange={handleInputChange}>
-                            <option value="">카테고리를 선택하세요</option>
-                            {Object.entries(categoryNames).map(([code, name]) => (
-                                <option key={code} value={name}>{name}</option>
-                            ))}
-                        </select>
+                        <input type="text" className="categoryCode" name="categoryCode" id="categoryCode"
+                               placeholder="카테고리를 입력하세요"
+                               value={scheduleData.categoryCode} onChange={handleInputChange} required/>
                     </div>
                     <div className="addNor-input-container">
                         <label>메모</label>

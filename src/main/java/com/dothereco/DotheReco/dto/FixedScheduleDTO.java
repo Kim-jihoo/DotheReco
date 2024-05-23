@@ -25,7 +25,8 @@ public class FixedScheduleDTO {
 
     private String fixedMemo;
     private Long categoryCode;
-    private Long placeCode;
+    //private Long placeCode;
     private String categoryName;
     private String categoryColor;
+    private String placeName; // 새로 추가
 }

@@ -18,6 +18,7 @@ import WalkingMapPage from "./WalkingMapPage";
 import RecoIngMake from "./RecoIngMake";
 import TimeLineMake from "./TimeLineMake";
 import MainMake from "./MainMake";
+import loading from "./loading";
 
 function App() {
     return (
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/RecoIngMake" element={<RecoIngMake/>} />
                 <Route path="/TimeLineMake" element={<TimeLineMake/>} />
                 <Route path="/MainMake" element={<MainMake/>} />
+                <Route path ="/loading" element={<loading/>} />
             </Routes>
         </Router>
     );

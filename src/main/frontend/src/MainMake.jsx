@@ -9,7 +9,7 @@ import CalendarImage from './images/Calendar.png';
 import TodoListImage from './images/할 일 list.png';
 import axios from 'axios';
 
-const Main = () => {
+const MainMake = () => {
     const [date, setDate] = useState(new Date());
     const [mini_date, mini_setDate] = useState(new Date());
     const [selectedMiniDates, setSelectedMiniDates] = useState([]);
@@ -25,17 +25,46 @@ const Main = () => {
     //  const [recommendedSlots, setRecommendedSlots] = useState([]); /////
 
     const [recommendedTimes, setRecommendedTimes] = useState([]); // 추천된 시간대를 저장하는 상태
+    const [showEventsPopup, setShowEventsPopup] = useState(false); // 팝업 창을 보여줄지 여부를 나타내는 상태 추가
+    const [selectedEvents, setSelectedEvents] = useState([]); // 선택된 날짜의 일정들을 저장하는 상태 추가
 
+    // 클릭한 날짜에 해당하는 일정들을 보여주는 팝업 창을 엽니다.
+    const handleDateClick = (day) => {
+        // 23일이면 팝업 창을 엽니다.
+        if (day === 23) {
+            setShowEventsPopup(true);
+            // 임의로 입력한 일정들을 선택된 일정으로 설정합니다.
+            const predefinedEventsForMay23rd = [
+                { title: '인공지능', top: '25px', backgroundColor: '#DBE9CD' },
+                { title: '인공지능 과제', top: '50px', backgroundColor: '#F0CAB9' },
+                { title: '컴파일러', top: '75px', backgroundColor: '#DBE9CD' },
+                { title: '점심 약속', top: '100px', backgroundColor: '#FFDEAD' },
+                { title: '올리브영', top: '125px', backgroundColor: '#B9DEF0' }
+            ];
+            setSelectedEvents(predefinedEventsForMay23rd);
+        }
+    };
+
+    // 팝업 창을 닫습니다.
+    const handleClosePopup = () => {
+        setShowEventsPopup(false);
+    };
 
     const getCategoryColor = (categoryCode) => {
         // 카테고리 코드에 따라 다른 색상을 반환
         switch (categoryCode) {
-            case '과제':
-                return '#F0CAB9'; // 카테고리 코드 1에 대한 색상
+            case 1:
+                return '#DBE9CD'; // 카테고리 코드 1에 대한 색상
             case 2:
-                return '#FAE4A8'; // 카테고리 코드 2에 대한 색상
+                return '#F0CAB9'; // 카테고리 코드 2에 대한 색상
             case 3:
+                return '#CC99FF' //카테고리 코드 3에 대한 색상
+            case 4:
+                return '#FAE4A8' //카테고리 코드 3에 대한 색상
+            case 5:
                 return '#B9DEF0' //카테고리 코드 3에 대한 색상
+            case 6:
+                return '#FFDEAD' //카테고리 코드 3에 대한 색상
             default:
                 return '#DBE9CD'; // 기본 색상
         }
@@ -113,6 +142,14 @@ const Main = () => {
             }
         }
 
+        const predefinedEventsForMay23rd = [
+            { title: '인공지능', top: '25px', backgroundColor: '#DBE9CD' },
+            { title: '인공지능 과제', top: '50px', backgroundColor: '#F0CAB9' },
+            { title: '컴파일러', top: '75px', backgroundColor: '#DBE9CD' },
+            { title: '점심 약속', top: '100px', backgroundColor: '#FFDEAD' },
+            { title: '올리브영', top: '125px', backgroundColor: '#B9DEF0' }
+        ];
+
         // 각 날짜를 렌더링합니다.
         return days.map((day, index) => {
             const currentDate = new Date(viewYear, viewMonth, day);
@@ -122,36 +159,54 @@ const Main = () => {
                 const eventStartDate = new Date(event.fixedStartDay);
                 return eventStartDate.toDateString() === currentDate.toDateString();
             }).sort((a, b) => {
-                // 이벤트를 시작 시간 순으로 정렬합니다.
                 const aStartTime = new Date(`${a.fixedStartDay}T${a.fixedStartTime}`);
                 const bStartTime = new Date(`${b.fixedStartDay}T${b.fixedStartTime}`);
                 return aStartTime - bStartTime;
             });
 
+            // 오늘이 5월 23일이고 빈 칸이 아닌 경우에만 보이도록 설정
+            if (isToday && viewMonth === 4 && day === 23 && day !== '') {
+                return (
+                    <div key={index} className={`day today`}>
+                        {day}
+                        <div className="event-indicator-container">
+                            {/* 임의로 추가한 일정만 보이도록 함 */}
+                            {predefinedEventsForMay23rd.map((event, eventIndex) => (
+                                <div
+                                    key={eventIndex}
+                                    className="event-indicator"
+                                    style={{ top: event.top, backgroundColor: event.backgroundColor }}
+                                >
+                                    <div className="event-title">{event.title}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            }
+
             return (
                 <div key={index} className={`day ${isToday ? 'today' : ''}`}>
                     {day}
                     <div className="event-indicator-container">
-                        {/* 유동 스케줄 표시 */}
                         {flexEvents.map((event, eventIndex) => (
                             <div
                                 key={eventIndex}
                                 className="event-indicator"
                                 style={{
-                                    top: `${(eventIndex + 1) * 25}px`,
+                                    top: `${(eventIndex + 1.15) * 22}px`,
                                     backgroundColor: getCategoryColor(event.categoryCode)
                                 }}
                             >
                                 <div className="event-title">{event.flexTitle}</div>
                             </div>
                         ))}
-                        {/* 일반 스케줄 표시 */}
                         {eventList.map((event, eventIndex) => (
                             <div
                                 key={eventIndex}
                                 className="event-indicator"
                                 style={{
-                                    top: `${(eventIndex + 1) * 25}px`,
+                                    top: `${(eventIndex + 1.15) * 22}px`,
                                     backgroundColor: getCategoryColor(event.categoryCode)
                                 }}
                             >
@@ -522,6 +577,20 @@ const Main = () => {
                 </div>
             </div>
 
+            {/* 선택된 날짜의 일정을 보여주는 팝업 창 */}
+            {showEventsPopup && (
+                <div className="events-popup">
+                    <div className="events-list">
+                        {selectedEvents.map((event, index) => (
+                            <div key={index} className="event">
+                                <div className="event-title">{event.title}</div>
+                            </div>
+                        ))}
+                    </div>
+                    <button onClick={handleClosePopup}>닫기</button>
+                </div>
+            )}
+
             {/*하단 메뉴 바*/}
             <div className="menu">
                 <div className="menu-details">
@@ -545,4 +614,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default MainMake;

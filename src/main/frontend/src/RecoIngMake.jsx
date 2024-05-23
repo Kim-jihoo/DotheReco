@@ -57,7 +57,7 @@ const RecoIngMake = ({ recommendedSchedules }) => {
                     endTime: "12:30",
                     event: "인공지능 과제",
                     category: 1,
-                    place: "이화여대 아산공학관"
+                    place: "이화여대 신공학관"
                 },
                 {
                     startTime: "15:00",
@@ -98,6 +98,16 @@ const RecoIngMake = ({ recommendedSchedules }) => {
         };
         loadEvents();
     }, []);
+
+    const scheduleItems = [
+        '올리브영', '헬스장', '과외 준비', '인공지능 과제',
+        '컴파일러 과제', '가상현실 과제', '골프 연습',
+        '스터디 과제', '교환학생 서류 준비', '서점가기',
+        '장보기', '컴파일러 시험 공부'
+    ];
+
+    const selectedScheduleItems = ['올리브영', '헬스장', '과외 준비'];
+
     const goToTimeLine = () => {
         navigate('/timeLine');
     };
@@ -114,19 +124,7 @@ const RecoIngMake = ({ recommendedSchedules }) => {
         navigate('/Setting');
     }
     const goToTimeLineMake = () => {
-        // 페이지 이동 전에 로딩 상태를 설정합니다.
-        // 이 예시에서는 setLoading 함수를 통해 로딩 상태를 변경합니다.
-        setLoading(true);
-
-        // setTimeout 함수를 사용하여 일정 시간이 지난 후에 페이지 이동을 수행합니다.
-        setTimeout(() => {
-            navigate('/TimeLineMake');
-        }, 2000); // 2000밀리초(2초) 후에 페이지 이동
-
-        // setTimeout 함수를 사용하여 임의로 추가한 로딩 시간이 지난 후에 로딩 상태를 해제할 수 있습니다.
-        setTimeout(() => {
-            setLoading(false);
-        }, 2500); // 2500밀리초(2.5초) 후에 로딩 상태 해제
+        navigate('/TimeLineMake');
     }
 
     const formatTime = (time) => {
@@ -184,7 +182,8 @@ const RecoIngMake = ({ recommendedSchedules }) => {
                 수정
             </button>
             <button type="submit" className="recoing-submit" form="reco-form">추천</button>
-            <button type="submit" className="recoing-complete-submit" form="reco-form" onClick={goToTimeLineMake}>완료</button>
+            <button type="submit" className="recoing-complete-submit" form="reco-form" onClick={goToTimeLineMake}>완료
+            </button>
 
             {/* 타임 테이블 */}
             <div className="recoing-timetable-container">
@@ -252,7 +251,7 @@ const RecoIngMake = ({ recommendedSchedules }) => {
                 </div>
             </div>
 
-            {/* 사이드바 */}
+            {/*사이드바*/}
             <div className={`sidebar ${isSideBarOpen ? 'open' : ''}`}>
                 <div className="sidebar-content">
                     <h2 className="reco-sidebar-flex">유동 스케줄</h2>
@@ -264,6 +263,17 @@ const RecoIngMake = ({ recommendedSchedules }) => {
                                     type="checkbox"
                                     checked={selectedSchedules.includes(index)}
                                     onChange={() => handleScheduleChange(index)}
+                                />
+                            </li>
+                        ))}
+                        {/* Shortened version */}
+                        {scheduleItems.map((item, index) => (
+                            <li key={index} className="schedule-item">
+                                {item}
+                                <input
+                                    type="checkbox"
+                                    checked={selectedScheduleItems.includes(item)}
+                                    onChange={() => handleScheduleChange(item)}
                                 />
                             </li>
                         ))}

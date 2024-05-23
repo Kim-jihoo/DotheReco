@@ -405,18 +405,18 @@
 }
 
 .event-title {
-    line-height: 22px; /* 텍스트의 수직 중앙 정렬을 위한 높이 설정 */
+    line-height: 19px; /* 텍스트의 수직 중앙 정렬을 위한 높이 설정 */
     font-family: 'NanumSquareRound', sans-serif;
     font-weight: bold;
 }
 
 .event-indicator {
-    width: 60px;
-    height: 20px;
+    width: 55px;
+    height: 18px;
     background-color: #DBE9CD;
     position: absolute;
     border-radius: 10%;
-    left: 5px;
+    left: 3px;
 }
 
 /* 제목의 길이를 제한하고, 오버플로우가 생기면 생략 표시(...)를 추가 */
@@ -432,6 +432,7 @@
 .day .event-indicator-container {
     max-height: 75px; /* 필요에 따라 조정 가능 */
     overflow-y: auto;
+
 }
 
 /*예상소요시간 입력*/

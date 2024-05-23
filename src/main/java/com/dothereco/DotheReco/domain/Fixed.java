@@ -46,7 +46,7 @@ public class Fixed {
     @JoinColumn(name = "Category_Code")
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Place_Code")
     private Place place;
 
